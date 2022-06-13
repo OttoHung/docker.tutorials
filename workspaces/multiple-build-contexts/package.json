@@ -1,0 +1,16 @@
+{
+  "author": "Otto Hung<totsi04@gmail.com>",
+  "description": "This workspace is the example to build docker image",
+  "dependencies": {
+    "express": "latest",
+    "http-status-codes": "latest"
+  },
+  "devDependencies": {
+    "@types/express": "latest"
+  },
+  "license": "MIT",
+  "main": "dist/server.js",
+  "name": "@ottohung/multiple-build-context",
+  "repository": "git@github.com:OttoHung/docker.tutorials.git",
+  "version": "0.1.0"
+}
