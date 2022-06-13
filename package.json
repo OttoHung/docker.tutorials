@@ -1,9 +1,6 @@
 {  
   "author": "OttoHung",
   "description": "This tutorial shows up what Docker can do on building an image",
-  "dependencies": {
-    
-  },
   "devDependencies": {
     "eslint": "latest",
     "eslint-config-standard": "latest",
@@ -17,7 +14,6 @@
     "@types/node": "latest"
   },
   "license": "MIT",
-  "main": "index.js",
   "name": "docker.tutorial",
   "private": true,
   "scripts": {
@@ -31,7 +27,7 @@
     "test": "yarn workspaces run test"
   },
   "workspaces":[
-    "workspaces/multiple-build-contexts"
+    "workspaces/*"
   ],
   "version": "0.1.0"
 }
