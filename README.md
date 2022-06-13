@@ -3,7 +3,7 @@
 This tutorial shows up what Docker can do in building an image
 
 
-# What version of Docker does this tutorial target?
+# What version of Docker is this tutorial target?
 
 All of the examples and use cases are working against Dockerfile 1.4 and Buildx v0.8.
 Please ensure the version of Dockerfile and Buildx before starting this tutorial.
