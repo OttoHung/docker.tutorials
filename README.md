@@ -30,19 +30,25 @@ docker build -t ${imageName}:${tag} .
 Investigate the content of an image when the container uses `CMD` instruction 
 to execute a command:
 ```bash
-docker run -it ${imageName} sh
+docker run -it ${imageName}:${tag} sh
 ```
 
 Or access the content of an image by `--entrypoint` when the container uses
 `Entrypoint` instruction to execute a command:
 ```bash
-docker run -it --entrypoint sh ${imageName}
+docker run -it --entrypoint sh ${imageName}:${tag}
 ```
 
 Or writing the build history into a file:
 ```bash
-docker image history --no-trunc ${imageName} > ${fileName}
+docker image history --no-trunc ${imageName}:${tag} > ${fileName}
 ```
+
+To create a container by the image for a service:
+```bash
+docker run -p ${port}:${port} ${imageName}:${tag}
+```
+
 
 # Reference
 
