@@ -1,6 +1,6 @@
 {
   "author": "Otto Hung<totsi04@gmail.com>",
-  "description": "This workspace is the example to build docker image",
+  "description": "This workspace is an example demostrating how to do complex builds",
   "dependencies": {
     "express": "latest",
     "http-status-codes": "latest"
@@ -12,5 +12,9 @@
   "main": "dist/server.js",
   "name": "@ottohung/multiple-build-context",
   "repository": "git@github.com:OttoHung/docker.tutorials.git",
+  "scripts": {
+    "build": "tsc",
+    "serve": "node ./dist/server.js"
+  },
   "version": "0.1.0"
 }

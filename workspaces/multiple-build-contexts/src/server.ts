@@ -11,7 +11,12 @@ app.get("/", endpoint.greeting)
    .get("/health_check", endpoint.helthCheck)
 
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
     console.log(`Server starts and listens to ${port}`)
 })
 
+process.on("SIGTERM", () => {
+    server.close(() => {
+        console.log("Server is terminated!!")
+    })
+})
