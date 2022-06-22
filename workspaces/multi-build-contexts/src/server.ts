@@ -15,7 +15,13 @@ const server = app.listen(port, () => {
     console.log(`Server starts and listens to ${port}`)
 })
 
-process.on("SIGTERM", () => {
+process.on('SIGINT', () => {
+    server.close(() => {
+        console.log("Server is cancelled!!")
+    })
+})
+
+process.on('SIGTERM', () => {
     server.close(() => {
         console.log("Server is terminated!!")
     })
