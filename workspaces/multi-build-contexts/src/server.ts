@@ -15,12 +15,14 @@ const server = app.listen(port, () => {
     console.log(`Server starts and listens to ${port}`)
 })
 
+//This terminates the service when Control+C is pressed
 process.on('SIGINT', () => {
     server.close(() => {
         console.log("Server is cancelled!!")
     })
 })
 
+//This terminates the service when `docker kill -s SIGTERM` is executed
 process.on('SIGTERM', () => {
     server.close(() => {
         console.log("Server is terminated!!")
