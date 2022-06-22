@@ -8,7 +8,7 @@ WORKDIR /app
 COPY ["./", "/app"]
 
 # For investigating the context in the image, please use docker run -it ${imageName}:${tag} sh
-CMD ["node", "workspaces/multiple-build-contexts/dist/server.js" ]
+CMD ["node", "workspaces/multi-build-contexts/dist/server.js" ]
 # Or use:
 # CMD ["node", "./server.js"]
 

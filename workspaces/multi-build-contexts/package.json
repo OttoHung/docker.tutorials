@@ -10,7 +10,7 @@
   },
   "license": "MIT",
   "main": "dist/server.js",
-  "name": "@ottohung/multiple-build-context",
+  "name": "@ottohung/multi-build-context",
   "repository": "git@github.com:OttoHung/docker.tutorials.git",
   "scripts": {
     "build": "tsc",
