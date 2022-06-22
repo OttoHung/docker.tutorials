@@ -1,14 +1,19 @@
 # syntax=docker/dockerfile:1
 
+## This docker file build image from all contexts
+
 ## Use DOCKER_BUILDKIT=1 in the command line prompt to speed up the build time
 FROM node:14.17.1 AS baseBuild
 
-WORKDIR /app
+WORKDIR /build
 ## There are files under workspaces/multiple-build-contexts/dist to app direcotry only
-COPY ["./", "/app"]
-
+COPY ["./", "/build"]
 RUN yarn build
 
+
+FROM node:14.17.1 AS appBuild
+WORKDIR /app
+COPY --from=baseBuild ["/build", "/app"]
 EXPOSE 5478
 
 ## For investigating the context in the image, please use docker run -it ${imageName}:${tag} sh
