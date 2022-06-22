@@ -8,6 +8,10 @@ FROM node:14.17.1 AS baseBuild
 WORKDIR /build
 ## There are files under workspaces/multiple-build-contexts/dist to app direcotry only
 COPY ["./", "/build"]
+
+## Due to docker cannot access private repository and download packages from private 
+## package registry, it's not recommended to run `yarn install` in dockerfile.
+
 RUN yarn build
 
 
