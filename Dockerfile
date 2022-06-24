@@ -1,4 +1,5 @@
-# syntax=docker/dockerfile:1
+# syntax=docker/dockerfile:1.4
+## The above line indicates what version of Dockerfile is in use.
 
 ## This docker file build image from all contexts
 
