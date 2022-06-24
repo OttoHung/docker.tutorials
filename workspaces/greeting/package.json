@@ -1,6 +1,6 @@
 {
   "author": "Otto Hung<totsi04@gmail.com>",
-  "description": "This workspace is an example demostrating how to do complex builds",
+  "description": "This is a greeting service",
   "dependencies": {
     "express": "latest",
     "http-status-codes": "latest"
@@ -10,7 +10,7 @@
   },
   "license": "MIT",
   "main": "dist/server.js",
-  "name": "@ottohung/multi-build-context",
+  "name": "@ottohung/greeting",
   "repository": "git@github.com:OttoHung/docker.tutorials.git",
   "scripts": {
     "build": "tsc",

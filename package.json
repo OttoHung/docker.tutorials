@@ -22,7 +22,7 @@
     "clean:install": "ts-clean -i",
     "endpoint": "yarn workspace endpoint",
     "fix": "eslint --fix",
-    "multi-build": "yarn workspace @ottohung/multi-build-context",
+    "greeting": "yarn workspace @ottohung/greeting",
     "lint": "eslint",
     "test": "yarn workspaces run test"
   },
