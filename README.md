@@ -93,6 +93,36 @@ docker build --build-context greetingService=${userHomePath}/docker.tutorials/wo
 ```
 
 
+## Load build context from a Git repository
+
+It is quite simple to load build context from a Git repository by 
+specifying the URL of the repository as:
+```bash
+docker build \
+  --build-context dockerTutorial=https://github.com/OttoHung/typescript.tutorial.git
+```
+Or access the repository via ssh by:
+```bash
+docker build \
+  --build-context dockerTutorial=git@github.com:OttoHung/typescript.tutorial.git
+```
+
+By using this way, the whole repository is the build context for the 
+`Dockerfile`. If the build context is a private repository, please 
+ensure docker has permission to access the resources, such as 
+configuring SSH key, Personal Access Token(PAT) or other access tokens.
+
+
+## Load build context from a tarball via HTTP URL
+
+Build context flag also supports tarball(*.tar) and it can be loaded 
+via HTTP URL as:
+```bash
+docker build \
+  --build-context dockerTutorial=https://github.com/OttoHung/typescript.tutorials/archive/refs/tags/tutorials.tar.gz
+```
+
+
 # CLI Commands for building and validating the docker image
 
 Build an image with a tag:
