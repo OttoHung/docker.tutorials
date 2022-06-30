@@ -123,6 +123,29 @@ docker build \
 ```
 
 
+## Load build context from a docker image
+
+Before `Dockerfile` 1.4, the docker image can be loaded by `FROM` 
+instruction with the URL of the image in the `Dockerfile` as:
+```dockerfile
+FROM https://ghcr.io/OttoHung/greeting:latest
+```
+Or
+```dockerfile
+FROM alpine:3.15
+```
+
+By using the build context flag, the docker image goes with 
+`docker-image://` prefix to tell what docker image to load. For
+example:
+```bash
+docker build
+  --build-context alpine=docker-image://alpine:3.15
+```
+
+> To Do: test how to use `docker-image://` with `GHCR.io`
+
+
 # CLI Commands for building and validating the docker image
 
 Build an image with a tag:
