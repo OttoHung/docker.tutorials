@@ -1,14 +1,17 @@
-{  
+{
   "author": "OttoHung",
   "description": "This tutorial shows up what Docker can do on building an image",
   "devDependencies": {
     "eslint": "latest",
     "eslint-config-standard": "latest",
     "eslint-plugin-react": "latest",
+    "jest": "^26.0.0",
     "tsconfig-paths": "latest",
+    "ts-jest": "^26.0.0",
     "ts-node": "latest",
     "typescript": "latest",
     "@ottohung/ts-clean": "latest",
+    "@types/jest": "^26.0.0",
     "@typescript-eslint/eslint-plugin": "latest",
     "@typescript-eslint/parser": "latest",
     "@types/node": "latest"
@@ -26,7 +29,7 @@
     "lint": "eslint",
     "test": "yarn workspaces run test"
   },
-  "workspaces":[
+  "workspaces": [
     "workspaces/*"
   ],
   "version": "0.1.0"
