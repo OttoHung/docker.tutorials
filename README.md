@@ -104,12 +104,12 @@ It is quite simple to load build context from a Git repository by
 specifying the URL of the repository as:
 ```bash
 docker build \
-  --build-context dockerTutorial=https://github.com/OttoHung/typescript.tutorial.git
+  --build-context dockerTutorial=https://github.com/OttoHung/docker.tutorial.git
 ```
 Or access the repository via ssh by:
 ```bash
 docker build \
-  --build-context dockerTutorial=git@github.com:OttoHung/typescript.tutorial.git
+  --build-context dockerTutorial=git@github.com:OttoHung/docker.tutorial.git
 ```
 
 By using this way, the whole repository is the build context for the 
@@ -124,7 +124,7 @@ Build context flag also supports tarball(*.tar) and it can be loaded
 via HTTP URL as:
 ```bash
 docker build \
-  --build-context dockerTutorial=https://github.com/OttoHung/typescript.tutorials/archive/refs/tags/tutorials.tar.gz
+  --build-context dockerTutorial=https://github.com/OttoHung/docker.tutorials/archive/refs/tags/tutorials.tar.gz
 ```
 
 
