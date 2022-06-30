@@ -67,7 +67,8 @@ Or
 docker build --build-context greetingService=workspaces/greeting
 ```
 
-If the `Dockerfile` is not in the root directory as follows:
+If the `Dockerfile` is not in the same directory as the context 
+directory as follows:
 ```bash
 .
 +-- dockerfile
@@ -80,21 +81,16 @@ If the `Dockerfile` is not in the root directory as follows:
 +-- README.md
 ```
 Then the file path can be typed in the following format:
+In the Unix-liked system, tilde(~) represents the path to the 
+user's home directory and this can be used as a part of the file 
+path in the build context flag as:
 ```bash
-docker build --build-context greetingService=../workspaces/greeting
+docker build --build-context greetingService=~/docker.tutorials/workspaces/greeting
 ```
-
-
-
-
-- `local directory`:
-  The absolute and relative paths are supported as well as the 
-  directory is in the parent folder.
-  - `--build-context multiBuild=~/repo/docker.tutorials/workspaces/multi-build-contexts`
-  - `--build-context multiBuild=/workspaces/multi-build-contexts`
-  - `--build-context multiBuild=./workspaces/multi-build-contexts`
-  - `--build-context multiBuild=../multi-build-contexts`
-- a
+This can be interpreted into an absolute file path as:
+```bash
+docker build --build-context greetingService=${userHomePath}/docker.tutorials/workspaces/greeting
+```
 
 
 # CLI Commands for building and validating the docker image
