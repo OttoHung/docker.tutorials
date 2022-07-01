@@ -17,7 +17,7 @@ install or upgrade the Docker, please go to
 [Install Docker Engine](https://docs.docker.com/engine/install/) page. 
 
 
-# Preface
+# Why do we need Build Context flag?
 
 Until `Dockerfile` 1.4, the build context from a local repository for 
 the docker image is given from a path in the docker build command as:
@@ -28,7 +28,7 @@ It results in many `COPY` and `ADD` instructions being written in the
 `Dockerfile` and reduces the readability of code when the developers 
 would like to pack an image from a mono repo. Also, the build context 
 could not be in the parent directory either. Fortunately, `Docker` 
-supports multiple build context flag in `Dockerfile 1.4`. This 
+supports multiple build context flags in `Dockerfile 1.4`. This 
 reduces the complexity of `Dockerfile` and provides more flexibility 
 in organising build contexts in the code with CI/CD pipeline.
 
