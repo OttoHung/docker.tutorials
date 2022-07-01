@@ -153,27 +153,39 @@ docker build
 
 # CLI Commands for building and validating the docker image
 
+## Build docker image with tag
+
 Build an image with a tag:
 ```bash
 docker build -t ${imageName}:${tag} .
 ```
+
+
+## Investigate image content
 
 Investigate the content of an image when the container uses `CMD` instruction 
 to execute a command:
 ```bash
 docker run -it ${imageName}:${tag} sh
 ```
-
-Or access the content of an image by `--entrypoint` when the container uses
-`Entrypoint` instruction to execute a command:
+Or
 ```bash
 docker run -it --entrypoint sh ${imageName}:${tag}
 ```
 
-Or writing the build history into a file:
+However, only `--entrypoint` flag works when the container uses
+`Entrypoint` instruction to execute a command.
+
+
+## Write build image log to a file
+
+To write the build history into a file:
 ```bash
 docker image history --no-trunc ${imageName}:${tag} > ${fileName}
 ```
+
+
+## Ceate a container for a service
 
 To create a container by the image for a service:
 ```bash
