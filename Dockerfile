@@ -21,14 +21,4 @@ WORKDIR /app
 COPY --from=baseBuild ["/build", "/app"]
 EXPOSE 5478
 
-## For investigating the context in the image, please use docker run -it ${imageName}:${tag} sh
-## This can receive SIGTERM
 CMD ["node", "workspaces/greeting/dist/server.js" ]
-# Or use:
-# CMD ["node", "./server.js"]
-
-## For investigating the context in the image, please use docker run -it --entrypoint sh ${imageName}:${tag}
-## This can receive SIGTERM
-# ENTRYPOINT ["/bin/sh", "-c", "node workspaces/multi-build-contexts/dist/server.js"]
-# Or use:
-# ENTRYPOINT ["node", "workspaces/multi-build-contexts/dist/server.js"]
