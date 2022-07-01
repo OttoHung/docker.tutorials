@@ -181,9 +181,34 @@ docker run -p ${port}:${port} ${imageName}:${tag}
 ```
 
 
+# Pitfalls
+
+## **DO NOT** use `/bin/sh` and `-c` in `CMD` and `ENTRYPOINT` when you want to receive the system signal
+
+In the execution form of `CMD` and `ENTRYPOINT`, it allows users to use 
+`["executable" "param1" "param2"]` to execute a command. It means there 
+are two ways to use the execution form like:
+```dockerfile
+CMD ["node", "dist/server.js"]
+ENTRYPOINT ["node", "dist/server.js"]
+```
+or
+```dockerfile
+CMD ["/bin/sh", "-c", "node dist/server.js"]
+ENTRYPOINT ["/bin/sh", "-c" , "node dist/server.js"]
+```
+
+However, the `dist/server.js` cannot receive system signal, such as `Ctrl+C`
+, from the command line prompt when the `CMD` and `ENTRYPOINT` 
+instructions go with `/bin/sh` to initiate `dist/server.js`. As a result, 
+please do not to use `/bin/sh` and `-c` when you would like to receive 
+system signal.
+
+
 # Reference
 
 - [Dockerfiles now Support Multiple Build Contexts](https://www.docker.com/blog/dockerfiles-now-support-multiple-build-contexts/)
 - [Best practices for writing Dockerfiles](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/)
 - [Docker build](https://docs.docker.com/engine/reference/commandline/build/)
 - [Dockerfile Reference](https://docs.docker.com/engine/reference/builder/)
+- [Overriding Dockerfile image defaults](https://docs.docker.com/engine/reference/run/#overriding-dockerfile-image-defaults)
