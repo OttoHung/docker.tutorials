@@ -76,7 +76,7 @@ If the `Dockerfile` is not in the same directory as the context
 directory as follows:
 ```bash
 .
-+-- dockerfile
++-- dockerfiles
 |   +-- greeting
 |   +-- calculator
 +-- workspaces
