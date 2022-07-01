@@ -12,6 +12,8 @@ COPY ["./", "/build"]
 
 ## Due to docker cannot access private repository and download packages from private 
 ## package registry, it's not recommended to run `yarn install` in dockerfile.
+## Also, the access token should not be used in the docker build because it can be
+## retrieved from history.
 
 RUN yarn build
 
