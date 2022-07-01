@@ -19,18 +19,20 @@ install or upgrade the Docker, please go to
 
 # Why do we need Build Context flag?
 
-Until `Dockerfile` 1.4, the build context from a local repository for 
-the docker image is given from a path in the docker build command as:
+To build an image by docker, the build context from a local 
+repository is given from a path in the docker build command as:
 ```bash
-docker build .
+docker build -t ${imageName}:${tag} .
 ```
-It results in many `COPY` and `ADD` instructions being written in the 
-`Dockerfile` and reduces the readability of code when the developers 
-would like to pack an image from a mono repo. Also, the build context 
-could not be in the parent directory either. Fortunately, `Docker` 
-supports multiple build context flags in `Dockerfile 1.4`. This 
-reduces the complexity of `Dockerfile` and provides more flexibility 
-in organising build contexts in the code with CI/CD pipeline.
+However, this is not allowed to access files outsite of specified 
+build context by using the `../` parent selector for security 
+reason. It results in many `COPY` and `ADD` instructions being 
+written in the `Dockerfile` to achive this purpose and which reduces 
+the readability of code when the developers would like to pack an 
+image from a mono repo. Fortunately, `Docker` supports multiple 
+build context flags in `Dockerfile 1.4`. This reduces the complexity 
+of `Dockerfile` and provides more flexibility in organising build 
+contexts in the code with CI/CD pipeline.
 
 
 # What is the Build Context flag?
@@ -42,7 +44,9 @@ contexts, including `local directory`, `Git repository`,
 The syntax of the build context flag is:
 ```bash
 docker buildx build \
-  --build-context ${name}=${sourceOfContext}
+  --build-context ${name}=${sourceOfContext} \
+  -t ${imageName}:${tag} \
+  .
 ```
 `${name}` is the name of the build context which will be used in 
 the Dockerfile and the `${sourceOfContext}` is the location of 
@@ -54,7 +58,9 @@ image by using:
 ```bash
 docker build \
   --build-context ${context1}=${sourceOfContext1} \
-  --build-context ${context2}=${sourceOfContext2}
+  --build-context ${context2}=${sourceOfContext2} \
+  -t ${imageName}:${tag} \
+  .
 ```
 
 
@@ -67,12 +73,16 @@ in a local directory.
 To load build context from a relative file path:
 ```bash
 docker buildx build \
-  --build-context greetingService=./workspaces/greeting
+  --build-context greetingService=./workspaces/greeting \
+  -t ${imageName}:${tag} \
+  .
 ```
 Or
 ```base
 docker buildx build \
-  --build-context greetingService=workspaces/greeting
+  --build-context greetingService=workspaces/greeting \
+  -t ${imageName}:${tag} \
+  .
 ```
 
 If the `Dockerfile` is not in the same directory as the context 
@@ -94,12 +104,16 @@ user's home directory and this can be used as a part of the file
 path in the build context flag as:
 ```bash
 docker buildx build \
-  --build-context greetingService=~/docker.tutorials/workspaces/greeting
+  --build-context greetingService=~/docker.tutorials/workspaces/greeting \
+  -t ${imageName}:${tag} \
+  .
 ```
 This can be interpreted into an absolute file path as:
 ```bash
 docker buildx build \
-  --build-context greetingService=${userHomePath}/docker.tutorials/workspaces/greeting
+  --build-context greetingService=${userHomePath}/docker.tutorials/workspaces/greeting \
+  -t ${imageName}:${tag} \
+  .
 ```
 
 
@@ -109,12 +123,16 @@ It is quite simple to load build context from a Git repository by
 specifying the URL of the repository as:
 ```bash
 docker buildx build \
-  --build-context dockerTutorial=https://github.com/OttoHung/docker.tutorial.git
+  --build-context dockerTutorial=https://github.com/OttoHung/docker.tutorial.git \
+  -t ${imageName}:${tag} \
+  .
 ```
 Or access the repository via ssh by:
 ```bash
 docker buildx build \
-  --build-context dockerTutorial=git@github.com:OttoHung/docker.tutorial.git
+  --build-context dockerTutorial=git@github.com:OttoHung/docker.tutorial.git \
+  -t ${imageName}:${tag} \
+  .
 ```
 
 By using this way, the whole repository is the build context for the 
@@ -129,7 +147,9 @@ Build context flag also supports tarball(*.tar) and it can be loaded
 via HTTP URL as:
 ```bash
 docker buildx build \
-  --build-context dockerTutorial=https://github.com/OttoHung/docker.tutorials/archive/refs/tags/tutorials.tar.gz
+  --build-context dockerTutorial=https://github.com/OttoHung/docker.tutorials/archive/refs/tags/tutorials.tar.gz \
+  -t ${imageName}:${tag} \
+  .
 ```
 
 
@@ -150,7 +170,9 @@ By using the build context flag, the docker image goes with
 example:
 ```bash
 docker buildx build
-  --build-context alpine=docker-image://alpine:3.15
+  --build-context alpine=docker-image://alpine:3.15 \
+  -t ${imageName}:${tag} \
+  .
 ```
 
 > To Do: test how to use `docker-image://` with `GHCR.io`
