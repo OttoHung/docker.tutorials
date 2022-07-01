@@ -23,7 +23,6 @@
     "build": "yarn workspaces run build",
     "clean": "ts-clean -r workspaces/**/lib workspaces/**/dist",
     "clean:install": "ts-clean -i",
-    "endpoint": "yarn workspace endpoint",
     "fix": "eslint --fix",
     "greeting": "yarn workspace @ottohung/greeting",
     "lint": "eslint",
