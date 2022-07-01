@@ -23,7 +23,7 @@ EXPOSE 5478
 
 ## For investigating the context in the image, please use docker run -it ${imageName}:${tag} sh
 ## This can receive SIGTERM
-CMD ["node", "workspaces/multi-build-contexts/dist/server.js" ]
+CMD ["node", "workspaces/greeting/dist/server.js" ]
 # Or use:
 # CMD ["node", "./server.js"]
 
