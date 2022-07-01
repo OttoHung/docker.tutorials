@@ -41,7 +41,8 @@ contexts, including `local directory`, `Git repository`,
 
 The syntax of the build context flag is:
 ```bash
-docker build --build-context ${name}=${sourceOfContext}
+docker buildx build \
+  --build-context ${name}=${sourceOfContext}
 ```
 `${name}` is the name of the build context which will be used in 
 the Dockerfile and the `${sourceOfContext}` is the location of 
@@ -65,11 +66,13 @@ in a local directory.
 
 To load build context from a relative file path:
 ```bash
-docker build --build-context greetingService=./workspaces/greeting
+docker buildx build \
+  --build-context greetingService=./workspaces/greeting
 ```
 Or
 ```base
-docker build --build-context greetingService=workspaces/greeting
+docker buildx build \
+  --build-context greetingService=workspaces/greeting
 ```
 
 If the `Dockerfile` is not in the same directory as the context 
@@ -90,11 +93,13 @@ In the Unix-liked system, tilde(~) represents the path to the
 user's home directory and this can be used as a part of the file 
 path in the build context flag as:
 ```bash
-docker build --build-context greetingService=~/docker.tutorials/workspaces/greeting
+docker buildx build \
+  --build-context greetingService=~/docker.tutorials/workspaces/greeting
 ```
 This can be interpreted into an absolute file path as:
 ```bash
-docker build --build-context greetingService=${userHomePath}/docker.tutorials/workspaces/greeting
+docker buildx build \
+  --build-context greetingService=${userHomePath}/docker.tutorials/workspaces/greeting
 ```
 
 
@@ -103,12 +108,12 @@ docker build --build-context greetingService=${userHomePath}/docker.tutorials/wo
 It is quite simple to load build context from a Git repository by 
 specifying the URL of the repository as:
 ```bash
-docker build \
+docker buildx build \
   --build-context dockerTutorial=https://github.com/OttoHung/docker.tutorial.git
 ```
 Or access the repository via ssh by:
 ```bash
-docker build \
+docker buildx build \
   --build-context dockerTutorial=git@github.com:OttoHung/docker.tutorial.git
 ```
 
@@ -123,7 +128,7 @@ configuring SSH key, Personal Access Token(PAT) or other access tokens.
 Build context flag also supports tarball(*.tar) and it can be loaded 
 via HTTP URL as:
 ```bash
-docker build \
+docker buildx build \
   --build-context dockerTutorial=https://github.com/OttoHung/docker.tutorials/archive/refs/tags/tutorials.tar.gz
 ```
 
@@ -144,7 +149,7 @@ By using the build context flag, the docker image goes with
 `docker-image://` prefix to tell what docker image to load. For
 example:
 ```bash
-docker build
+docker buildx build
   --build-context alpine=docker-image://alpine:3.15
 ```
 
