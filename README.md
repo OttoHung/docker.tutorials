@@ -1,14 +1,10 @@
-> :warning:
-> The examples in this document are not verified yet.
-> The verification and example code will be added onward.
-
-
 # Docker Tutorials
 
-This tutorial shows up how to do a complex builds
+This tutorial shows up how to build a docker image with the complex 
+build configurations.
 
 
-# What version of Docker is this tutorial target?
+# What version of Docker is this tutorial targeting?
 
 All of the examples and use cases are working against `Dockerfile` 
 1.4 and `Buildx` v0.8+. Please ensure the version of `Dockerfile` 
@@ -17,22 +13,22 @@ install or upgrade the Docker, please go to
 [Install Docker Engine](https://docs.docker.com/engine/install/) page. 
 
 
-# Why do we need Build Context flag?
+# Why do we need the Build Context flag?
 
 To build an image by docker, the single build context from a local 
 repository is given from a path in the docker build command as:
 ```bash
 docker build -t ${imageName}:${tag} .
 ```
-However, this is not allowed to access files outsite of specified 
+However, this is not allowed to access files outside of specified 
 build context by using the `../` parent selector for security 
-reason. This leads to the build context must be at the root 
-directory if the developers would like to build image for multiple 
-different project and it results in many `COPY` and `ADD` 
-instructions being written in the `Dockerfile` to achive the goal 
-and these reduce the readability of code. Fortunately, `Docker` 
-supports multiple build context flags in `Dockerfile 1.4`. This 
-reduces the complexity of `Dockerfile` and provides more 
+reasons. This leads to the build context must be at the root 
+directory if the developers would like to build an image for 
+multiple different projects and it results in many `COPY` and 
+`ADD` instructions being written in the `Dockerfile` to achieve 
+the goal and these reduce the readability of code. Fortunately, 
+`Docker` supports multiple build context flags in `Dockerfile 1.4`. 
+This reduces the complexity of `Dockerfile` and provides more 
 flexibility in organising build contexts in the code with CI/CD 
 pipeline.
 
@@ -228,7 +224,7 @@ docker run -p ${port}:${port} ${imageName}:${tag}
 
 In the execution form of `CMD` and `ENTRYPOINT`, it allows users to use 
 `["executable" "param1" "param2"]` to execute a command. It means there 
-are two ways to use the execution form like:
+are two ways to use the execution form:
 ```dockerfile
 CMD ["node", "dist/server.js"]
 ```
@@ -251,10 +247,10 @@ ENTRYPOINT ["/bin/sh", "-c" , "node dist/server.js"]
 > [Learn More](Dockerfile_entrypoint_sh)
 > 
 
-However, the `dist/server.js` cannot receive system signal, such as 
+However, the `dist/server.js` cannot receive system signals, such as 
 `Ctrl+C`, from the command line prompt when the `CMD` and `ENTRYPOINT` 
 instructions go with `/bin/sh` to initiate `dist/server.js`. As a 
-result, please do not to use `/bin/sh` and `-c` when you would like 
+result, please do not use `/bin/sh` and `-c` when you would like 
 to receive system signals.
 
 
@@ -289,11 +285,11 @@ ENTRYPOINT ["/bin/sh", "-c", "yarn greeting serve"]
 However, the `dist/server.js` excuedted in `serve` script cannot receive 
 system signal, such as `Ctrl+C`, from the command line prompt when the 
 `CMD` and `ENTRYPOINT` instructions use the `yarn` script. As a result, 
-please do not to use `yarn` script when you would like to receive system 
+please do not use `yarn` script when you would like to receive system 
 signals.
 
 
-## Build context is always built from root directory
+## Build context is always built from the root directory
 
 This may be true if the `docker build` command is executed at the root 
 directory, but it may not be true if the command is executed in the sub
@@ -302,13 +298,13 @@ is the difference as follows:
 
 ### Execute `docker build` in root directory
 
-It's easy to build docker image in root directory as executing:
+It's easy to build a docker image in the root directory as executing:
 ```bash
 docker run -t docker.tutorials:root .
 ```
 > [Learn More](scripts/pack_build_context_root.sh)
 > 
-Then this image contains everything under the root diretory.
+Then this image contains everything under the root directory.
 ```bash
 ~/Documents/repos/docker.tutorials - (main) $ docker run -it docker.tutorials:root sh
 # ls
@@ -336,7 +332,7 @@ greeting
 ### Conclusion
 
 As a result, the path, `.`, of build context is based on where the docker 
-command is exectued, not where the docker file is allocated. If the 
+command is executed, not where the docker file is allocated. If the 
 build context is specified with a file path, the build context is from 
 that path. For example, building image from `workspaces/greeting` folder 
 when executing `docker build` command in `dockerfiles` directory.
@@ -353,6 +349,16 @@ dist  package.json  src  tsconfig.json
 ```
 
 
+# Best practice
+
+- Always pick up the smallest size of the base image, such as [distroless container image](https://github.com/GoogleContainerTools/distroless).
+- Always use multiple-stage builds to reduce the size of the image
+- Always combining `RUN` instruction and minimizing the usage of `ADD`, `COPY` and `FROM` to reduce the size of the image
+- Utilizing caching to speed up the build process
+- Ignoring non-releasable files or resources
+- Always using `volumes` to store data
+
+
 # Reference
 
 - [Dockerfiles now Support Multiple Build Contexts](https://www.docker.com/blog/dockerfiles-now-support-multiple-build-contexts/)
@@ -360,3 +366,4 @@ dist  package.json  src  tsconfig.json
 - [Docker build](https://docs.docker.com/engine/reference/commandline/build/)
 - [Dockerfile Reference](https://docs.docker.com/engine/reference/builder/)
 - [Overriding Dockerfile image defaults](https://docs.docker.com/engine/reference/run/#overriding-dockerfile-image-defaults)
+- [Use volumes](https://docs.docker.com/storage/volumes/)
