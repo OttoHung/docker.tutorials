@@ -28,7 +28,7 @@ COPY --from=baseBuild ["/build/workspaces/greeting", "/module/workspaces/greetin
 
 
 ## In this build, all source files are discarded to reduce the size of image
-FROM node:14.17.1 AS appBuild
+FROM node:14.17.1-alpine AS appBuild
 WORKDIR /app
 COPY --from=moduleBuild ["/module/node_modules", "/app/node_modules"]
 COPY --from=moduleBuild ["/module/package.json", "/app"]
