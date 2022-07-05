@@ -46,10 +46,10 @@ docker buildx build \
   -t ${imageName}:${tag} \
   .
 ```
-`${name}` is the name of the build context which will be used in 
-the Dockerfile and the `${sourceOfContext}` is the location of 
-the build context from `local directory`, `Git repository`, 
-`HTTP URL to tarball` or `Docker image`.
+`${name}` is the name of the build context, must be lowercase, 
+which will be used in the Dockerfile and the `${sourceOfContext}` 
+is the location of the build context from `local directory`, 
+`Git repository`, `HTTP URL to tarball` or `Docker image`.
 
 Also, `Dockerfile 1.4` supports multiple build contexts for an 
 image by using:
