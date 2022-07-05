@@ -232,16 +232,24 @@ are two ways to use the execution form like:
 ```dockerfile
 CMD ["node", "dist/server.js"]
 ```
+> [learn more](Dockerfile)
+> 
 ```dockerfile
 ENTRYPOINT ["node", "dist/server.js"]
 ```
+> [learn more](Dockerfile_greeting)
+> 
 or
 ```dockerfile
 CMD ["/bin/sh", "-c", "node dist/server.js"]
 ```
+> [learn more](Dockerfile_cmd_sh)
+> 
 ```dockerfile
 ENTRYPOINT ["/bin/sh", "-c" , "node dist/server.js"]
 ```
+> [learn more](Dockerfile_entrypoint_sh)
+> 
 
 However, the `dist/server.js` cannot receive system signal, such as 
 `Ctrl+C`, from the command line prompt when the `CMD` and `ENTRYPOINT` 
@@ -259,16 +267,24 @@ can be done as follows:
 ```dockerfile
 CMD ["yarn", "greeting", "serve"]
 ```
+> [learn more](Dockerfile_cmd_yarn)
+> 
 ```dockerfile
 ENTRYPOINT ["yarn", "greeting", "serve"]
 ```
+> [learn more](Dockerfile_entrypoint_yarn)
+> 
 or
 ```dockerfile
 CMD ["/bin/sh", "-c", "yarn greeting serve"]
 ```
+> [learn more](Dockerfile_cmd_yarn_sh)
+> 
 ```dockerfile
 ENTRYPOINT ["/bin/sh", "-c", "yarn greeting serve"]
 ```
+> [learn more](Dockerfile_entrypoint_yarn_sh)
+> 
 
 However, the `dist/server.js` excuedted in `serve` script cannot receive 
 system signal, such as `Ctrl+C`, from the command line prompt when the 
