@@ -103,6 +103,8 @@ docker buildx build \
   -t ${imageName}:${tag} \
   .
 ```
+> Note: Please do not use tidle(~) in the file path. Docker build cannot find 
+> the build context in this form.
 
 
 ## Load build context from a Git repository
