@@ -19,20 +19,22 @@ install or upgrade the Docker, please go to
 
 # Why do we need Build Context flag?
 
-To build an image by docker, the build context from a local 
+To build an image by docker, the single build context from a local 
 repository is given from a path in the docker build command as:
 ```bash
 docker build -t ${imageName}:${tag} .
 ```
 However, this is not allowed to access files outsite of specified 
 build context by using the `../` parent selector for security 
-reason. It results in many `COPY` and `ADD` instructions being 
-written in the `Dockerfile` to achive this purpose and which reduces 
-the readability of code when the developers would like to pack an 
-image from a mono repo. Fortunately, `Docker` supports multiple 
-build context flags in `Dockerfile 1.4`. This reduces the complexity 
-of `Dockerfile` and provides more flexibility in organising build 
-contexts in the code with CI/CD pipeline.
+reason. This leads to the build context must be at the root 
+directory if the developers would like to build image for multiple 
+different project and it results in many `COPY` and `ADD` 
+instructions being written in the `Dockerfile` to achive the goal 
+and these reduce the readability of code. Fortunately, `Docker` 
+supports multiple build context flags in `Dockerfile 1.4`. This 
+reduces the complexity of `Dockerfile` and provides more 
+flexibility in organising build contexts in the code with CI/CD 
+pipeline.
 
 
 # What is the Build Context flag?
