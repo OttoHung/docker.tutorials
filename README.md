@@ -232,23 +232,23 @@ are two ways to use the execution form like:
 ```dockerfile
 CMD ["node", "dist/server.js"]
 ```
-> [learn more](Dockerfile)
+> [Learn More](Dockerfile)
 > 
 ```dockerfile
 ENTRYPOINT ["node", "dist/server.js"]
 ```
-> [learn more](Dockerfile_greeting)
+> [Learn More](Dockerfile_greeting)
 > 
 or
 ```dockerfile
 CMD ["/bin/sh", "-c", "node dist/server.js"]
 ```
-> [learn more](Dockerfile_cmd_sh)
+> [Learn More](Dockerfile_cmd_sh)
 > 
 ```dockerfile
 ENTRYPOINT ["/bin/sh", "-c" , "node dist/server.js"]
 ```
-> [learn more](Dockerfile_entrypoint_sh)
+> [Learn More](Dockerfile_entrypoint_sh)
 > 
 
 However, the `dist/server.js` cannot receive system signal, such as 
@@ -267,23 +267,23 @@ can be done as follows:
 ```dockerfile
 CMD ["yarn", "greeting", "serve"]
 ```
-> [learn more](Dockerfile_cmd_yarn)
+> [Learn More](Dockerfile_cmd_yarn)
 > 
 ```dockerfile
 ENTRYPOINT ["yarn", "greeting", "serve"]
 ```
-> [learn more](Dockerfile_entrypoint_yarn)
+> [Learn More](Dockerfile_entrypoint_yarn)
 > 
 or
 ```dockerfile
 CMD ["/bin/sh", "-c", "yarn greeting serve"]
 ```
-> [learn more](Dockerfile_cmd_yarn_sh)
+> [Learn More](Dockerfile_cmd_yarn_sh)
 > 
 ```dockerfile
 ENTRYPOINT ["/bin/sh", "-c", "yarn greeting serve"]
 ```
-> [learn more](Dockerfile_entrypoint_yarn_sh)
+> [Learn More](Dockerfile_entrypoint_yarn_sh)
 > 
 
 However, the `dist/server.js` excuedted in `serve` script cannot receive 
@@ -291,6 +291,66 @@ system signal, such as `Ctrl+C`, from the command line prompt when the
 `CMD` and `ENTRYPOINT` instructions use the `yarn` script. As a result, 
 please do not to use `yarn` script when you would like to receive system 
 signals.
+
+
+## Build context is always built from root directory
+
+This may be true if the `docker build` command is executed at the root 
+directory, but it may not be true if the command is executed in the sub
+directory or other directories. There are two examples explaining what 
+is the difference as follows:
+
+### Execute `docker build` in root directory
+
+It's easy to build docker image in root directory as executing:
+```bash
+docker run -t docker.tutorials:root .
+```
+> [Learn More](scripts/pack_build_context_root.sh)
+> 
+Then this image contains everything under the root diretory.
+```bash
+~/Documents/repos/docker.tutorials - (main) $ docker run -it docker.tutorials:root sh
+# ls
+Dockerfile                Dockerfile_cmd_yarn       Dockerfile_entrypoint_yarn     LICENSE      jest.config.ts  scripts        yarn.lock
+Dockerfile_build_context  Dockerfile_cmd_yarn_sh    Dockerfile_entrypoint_yarn_sh  README.md    node_modules    tsconfig.json
+Dockerfile_cmd_sh         Dockerfile_entrypoint_sh  Dockerfile_greeting            dockerfiles  package.json    workspaces
+```
+
+### Execute `docker build` in workspace directory
+
+In this case, the location of `Dockerfile` must be given in the command line 
+prompt because there is no `Dockerfile` in `workspaces` directory as follows:
+```bash
+docker run -t docker.tutorials:workspaces -f ../Dockerfile_build_context .
+```
+> [Learn More](scripts/pack_build_context_workspace.sh)
+
+Then the image contains the directory in `workspaces` only.
+```bash
+~/Documents/repos/docker.tutorials - (main) $ docker run -it docker.tutorials:workspaces sh
+# ls
+greeting
+```
+
+### Conclusion
+
+As a result, the path, `.`, of build context is based on where the docker 
+command is exectued, not where the docker file is allocated. If the 
+build context is specified with a file path, the build context is from 
+that path. For example, building image from `workspaces/greeting` folder 
+when executing `docker build` command in `dockerfiles` directory.
+```bash
+docker build -t docker.tutorials:greeting -f ../Dockerfile_build_context ../workspaces/greeting
+```
+> [Learn More](scripts/pack_build_context_greeting.sh)
+> 
+The image contains the files under `workspaces/greeting` only as follows:
+```bash
+~/Documents/repos/docker.tutorials - (main) $ docker run -it docker.tutorials:greeting sh
+# ls
+dist  package.json  src  tsconfig.json
+```
 
 
 # Reference
