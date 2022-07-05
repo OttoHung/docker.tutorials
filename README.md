@@ -96,20 +96,10 @@ directory as follows:
 +-- package.json
 +-- README.md
 ```
-Then the file path can be typed in the following format:
-In the Unix-liked system, tilde(~) represents the path to the 
-user's home directory and this can be used as a part of the file 
-path in the build context flag as:
+The absolute file path could be fit in this case:
 ```bash
 docker buildx build \
-  --build-context greetingService=~/docker.tutorials/workspaces/greeting \
-  -t ${imageName}:${tag} \
-  .
-```
-This can be interpreted into an absolute file path as:
-```bash
-docker buildx build \
-  --build-context greetingService=${userHomePath}/docker.tutorials/workspaces/greeting \
+  --build-context greetingService=${rootDir}/docker.tutorials/workspaces/greeting \
   -t ${imageName}:${tag} \
   .
 ```
