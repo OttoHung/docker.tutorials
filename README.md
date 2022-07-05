@@ -224,18 +224,22 @@ docker run -p ${port}:${port} ${imageName}:${tag}
 
 # Pitfalls
 
-## **DO NOT** use `/bin/sh` and `-c` in `CMD` and `ENTRYPOINT` when you want to receive the system signal
+## **DO NOT** use `/bin/sh` and `-c` in `CMD` and `ENTRYPOINT` when you want to receive the system signals
 
 In the execution form of `CMD` and `ENTRYPOINT`, it allows users to use 
 `["executable" "param1" "param2"]` to execute a command. It means there 
 are two ways to use the execution form like:
 ```dockerfile
 CMD ["node", "dist/server.js"]
+```
+```dockerfile
 ENTRYPOINT ["node", "dist/server.js"]
 ```
 or
 ```dockerfile
 CMD ["/bin/sh", "-c", "node dist/server.js"]
+```
+```dockerfile
 ENTRYPOINT ["/bin/sh", "-c" , "node dist/server.js"]
 ```
 
@@ -243,8 +247,33 @@ However, the `dist/server.js` cannot receive system signal, such as `Ctrl+C`
 , from the command line prompt when the `CMD` and `ENTRYPOINT` 
 instructions go with `/bin/sh` to initiate `dist/server.js`. As a result, 
 please do not to use `/bin/sh` and `-c` when you would like to receive 
-system signal.
+system signals.
 
+
+## **DO NOT** use `yarn run ${scriptName}` in `CMD` and `ENTRYPOINT` when you want to receive the system signals
+
+`yarn` is also working in the `CMD` and `ENTRYPOINT` instruction when 
+the base image includes `yarn` or it has been installed in the build 
+image process. To run a `yarn` script, it can be done as follows:
+```dockerfile
+CMD ["yarn", "greeting", "serve"]
+```
+```dockerfile
+ENTRYPOINT ["yarn", "greeting", "serve"]
+```
+or
+```dockerfile
+CMD ["/bin/sh", "-c", "yarn greeting serve"]
+```
+```dockerfile
+ENTRYPOINT ["/bin/sh", "-c", "yarn greeting serve"]
+```
+
+However, the `dist/server.js` cannot receive system signal, such as `Ctrl+C`
+, from the command line prompt when the `CMD` and `ENTRYPOINT` 
+instructions use the `yarn` script. As a result, 
+please do not to use `yarn` script when you would like to receive 
+system signals.
 
 # Reference
 

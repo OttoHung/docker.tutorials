@@ -1,0 +1,47 @@
+# syntax=docker/dockerfile:1
+## The above line indicates what version of Dockerfile is in use.
+
+## This docker file build image from a specific workspace
+## In this case, greeting service will be included
+
+## Use DOCKER_BUILDKIT=1 in the command line prompt to speed up the build time
+FROM node:14.17.1 AS baseBuild
+
+WORKDIR /build
+## There are files under workspaces/greeting/dist to app direcotry only
+COPY ["./", "/build"]
+
+## Due to docker cannot access private repository and download packages from private 
+## package registry, it's not recommended to run `yarn install` in dockerfile.
+## Also, the access token should not be used in the docker build because it can be
+## retrieved from history.
+
+RUN yarn build
+
+
+FROM node:14.17.1 AS moduleBuild
+WORKDIR /module
+COPY --from=baseBuild ["/build/node_modules", "/module/node_modules"]
+COPY --from=baseBuild ["/build/package.json", "/module"]
+COPY --from=baseBuild ["/build/LICENSE", "/module"]
+COPY --from=baseBuild ["/build/workspaces/greeting", "/module/workspaces/greeting"]
+
+
+## In this build, all source files are discarded to reduce the size of image
+FROM node:14.17.1 AS appBuild
+WORKDIR /app
+COPY --from=moduleBuild ["/module/node_modules", "/app/node_modules"]
+COPY --from=moduleBuild ["/module/package.json", "/app"]
+COPY --from=moduleBuild ["/module/LICENSE", "/app"]
+
+## THis line must be executed before others to eliminate build error(xxx is not a directory)
+COPY --from=moduleBuild ["/module/workspaces/greeting/dist", "/app/workspaces/greeting/dist"]
+
+COPY --from=moduleBuild ["/module/workspaces/greeting/package.json", "/app/workspaces/greeting"]
+EXPOSE 5478
+
+## To use `ENTRYPOINT` due to this image should be started up
+## from `server.js` file
+##
+## Failed to recive system signals
+ENTRYPOINT ["/bin/sh", "-c", "yarn greeting serve"]
