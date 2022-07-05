@@ -1,4 +1,5 @@
 IMG_NAME=docker.tutorials:cmd-sh
+export DOCKER_BUILDKIT=1
 
 echo "Start to build docker image from: " && pwd
 
