@@ -75,6 +75,8 @@ docker buildx build \
   -t ${imageName}:${tag} \
   .
 ```
+> [Learn More](scripts/complex-builds/greeting/pack_at_root.sh)
+> 
 Or
 ```base
 docker buildx build \
@@ -82,6 +84,8 @@ docker buildx build \
   -t ${imageName}:${tag} \
   .
 ```
+> [Learn More](scripts/complex-builds/greeting/pack_at_root_no_dot.sh)
+
 
 If the `Dockerfile` is not in the same directory as the context 
 directory as follows:
@@ -103,9 +107,20 @@ docker buildx build \
   -t ${imageName}:${tag} \
   .
 ```
-> Note: Please do not use tidle(~) in the file path. Docker build cannot find 
-> the build context in this form.
+> Note: Please do not use tidle(~) in the file path. Docker build 
+> cannot find the build context in this form.
+> 
 
+Alternative, `docker buildx build` could access parent directories by 
+`..`. The following example accesses the greeting project from 
+`dockerfiles` folder:
+```bash
+docker buildx build \
+   --build-context greeting=../workspaces/greeting \
+   -t ${imageName} \
+```
+> [Learn More](scripts/complex-builds/greeting/pack_in_dockerfiles.sh)
+> 
 
 ## Load build context from a Git repository
 
