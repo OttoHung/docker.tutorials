@@ -112,8 +112,8 @@ docker buildx build \
 > 
 
 Alternative, `docker buildx build` could access parent directories by 
-`..`. The following example accesses the greeting project from 
-`dockerfiles` folder:
+double-dot(`..`). The following example accesses the greeting project 
+from `dockerfiles` folder:
 ```bash
 docker buildx build \
    --build-context greeting=../workspaces/greeting \
@@ -125,37 +125,37 @@ docker buildx build \
 ## Load build context from a Git repository
 
 It is quite simple to load build context from a Git repository by 
-specifying the URL of the repository as:
+specifying the URL of the repository and tagging the branch name with 
+harsh(`#`) at the end of URL as:
 ```bash
 docker buildx build \
-  --build-context dockerTutorial=https://github.com/OttoHung/docker.tutorial.git \
+  --build-context dockerTutorial=https://github.com/OttoHung/docker.tutorial.git#main \
   -t ${imageName}:${tag} \
   .
 ```
-Or access the repository via ssh by:
-```bash
-docker buildx build \
-  --build-context dockerTutorial=git@github.com:OttoHung/docker.tutorial.git \
-  -t ${imageName}:${tag} \
-  .
-```
+> [Learn More](scripts/complex-builds/greeting/pack_from_git_https.sh)
+> 
 
-By using this way, the whole repository is the build context for the 
+By using this, the whole repository is the build context for the 
 `Dockerfile`. If the build context is a private repository, please 
 ensure docker has permission to access the resources, such as 
 configuring SSH key, Personal Access Token(PAT) or other access tokens.
 
+> To build image via SSH connection: To be continued
+
 
 ## Load build context from a tarball via HTTP URL
 
-Build context flag also supports tarball(*.tar) and it can be loaded 
-via HTTP URL as:
+Build context flag also supports tarball(`*.tar` or `*.tar.gz`) and it 
+can be loaded via HTTP URL as:
 ```bash
 docker buildx build \
-  --build-context dockerTutorial=https://github.com/OttoHung/docker.tutorials/archive/refs/tags/tutorials.tar.gz \
+  --build-context dockerTutorial=https://github.com/OttoHung/docker.tutorials/archive/refs/tags/tarball.tar.gz \
   -t ${imageName}:${tag} \
   .
 ```
+> [Learn More](scripts/complex-builds/greeting/pack_from_tarball.sh)
+> 
 
 
 ## Load build context from a docker image
@@ -165,7 +165,7 @@ instruction with the URL of the image in the `Dockerfile` as:
 ```dockerfile
 FROM https://ghcr.io/OttoHung/greeting:latest
 ```
-Or
+Or specifying the name of the docker image:
 ```dockerfile
 FROM alpine:3.15
 ```
@@ -224,6 +224,10 @@ To create a container by the image for a service:
 docker run -p ${port}:${port} ${imageName}:${tag}
 ```
 
+Alternatively, running the container in the background by executing:
+```bash
+docker run -d -p ${port}:${port} ${imageName}:${tag}
+```
 
 # Pitfalls
 
@@ -255,7 +259,7 @@ ENTRYPOINT ["/bin/sh", "-c" , "node dist/server.js"]
 > 
 
 However, the `dist/server.js` cannot receive system signals, such as 
-`Ctrl+C`, from the command line prompt when the `CMD` and `ENTRYPOINT` 
+`Ctrl+C`, from the command prompt when the `CMD` and `ENTRYPOINT` 
 instructions go with `/bin/sh` to initiate `dist/server.js`. As a 
 result, please do not use `/bin/sh` and `-c` when you would like 
 to receive system signals.
@@ -290,7 +294,7 @@ ENTRYPOINT ["/bin/sh", "-c", "yarn greeting serve"]
 > 
 
 However, the `dist/server.js` excuedted in `serve` script cannot receive 
-system signal, such as `Ctrl+C`, from the command line prompt when the 
+system signal, such as `Ctrl+C`, from the command prompt when the 
 `CMD` and `ENTRYPOINT` instructions use the `yarn` script. As a result, 
 please do not use `yarn` script when you would like to receive system 
 signals.
@@ -374,3 +378,5 @@ dist  package.json  src  tsconfig.json
 - [Dockerfile Reference](https://docs.docker.com/engine/reference/builder/)
 - [Overriding Dockerfile image defaults](https://docs.docker.com/engine/reference/run/#overriding-dockerfile-image-defaults)
 - [Use volumes](https://docs.docker.com/storage/volumes/)
+- [Build context](https://docs.docker.com/engine/reference/commandline/buildx_build/#build-context)
+- [Build images with BuildKit](https://docs.docker.com/develop/develop-images/build_enhancements/#new-docker-build-secret-information)
