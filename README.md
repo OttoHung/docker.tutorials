@@ -107,11 +107,11 @@ docker buildx build \
   -t ${imageName}:${tag} \
   .
 ```
-> Note: Please do not use tidle(~) in the file path. Docker build 
-> cannot find the build context in this form.
+> Note: Please do not use tidle(~) in the file path. `Buildx` cannot 
+> find the build context in this form.
 > 
 
-Alternative, `docker buildx build` could access parent directories by 
+Alternatively, `docker buildx build` could access parent directories by 
 double-dot(`..`). The following example accesses the greeting project 
 from `dockerfiles` folder:
 ```bash
@@ -124,9 +124,11 @@ docker buildx build \
 
 ## Load build context from a Git repository
 
+### Clone the git repository via HTTPS
+
 It is quite simple to load build context from a Git repository by 
 specifying the URL of the repository and tagging the branch name with 
-harsh(`#`) at the end of URL as:
+harsh(`#`) at the end of the URL as:
 ```bash
 docker buildx build \
   --build-context dockerTutorial=https://github.com/OttoHung/docker.tutorial.git#main \
@@ -136,12 +138,39 @@ docker buildx build \
 > [Learn More](scripts/complex-builds/greeting/pack_from_git_https.sh)
 > 
 
-By using this, the whole repository is the build context for the 
-`Dockerfile`. If the build context is a private repository, please 
-ensure docker has permission to access the resources, such as 
-configuring SSH key, Personal Access Token(PAT) or other access tokens.
+The build context will be cloned to a directory with the name of the 
+repository in the `WORKDIR`. For example, the repository is in 
+`docker.tutorials` directory in this case. 
+```
+.
++-- ${WORKDIR}
+|   +-- docker.tutorials
+|       +-- README.md
+|       +-- node_modules
+|       +-- LICENSE
++-- bin
++-- usr
+```
 
-> To build image via SSH connection: To be continued
+However, `Buildx` cannot clone the repository due to the connection is unauthenticated if the build context is from a private repository. 
+Based on the experiment, an error message is returned as 
+`fatal: could not read Username for 'https://github.com': terminal prompts disabled` and it looks like `Buildx` clones the repository before 
+executing instructions and there is no other way to provide access 
+tokens to `Buildx`. The solution for this circumstance could use the 
+following `RUN` instruction to clone the remote repository.
+```dockerfile
+RUN --mount=type=secret,id=${SECRET_ID} git clone ${REPO_URL}
+```
+
+
+### Clone the git repository via SSH
+To be continued
+> repository via SSH connectoin. The error message is 
+> `unsupported context source **git@github.com** for ` when the 
+> `--build-context` is an SSH URL to the git repositroy or is a private 
+> repository.
+> 
+> [Learn More](scripts/complex-builds/greeting/pack_from_git_ssh.sh)
 
 
 ## Load build context from a tarball via HTTP URL
@@ -165,7 +194,7 @@ instruction with the URL of the image in the `Dockerfile` as:
 ```dockerfile
 FROM https://ghcr.io/OttoHung/greeting:latest
 ```
-Or specifying the name of the docker image:
+Or specify the name of the docker image:
 ```dockerfile
 FROM alpine:3.15
 ```
