@@ -1,8 +1,34 @@
-# Docker Tutorials
+# Docker Tutorials <!-- omit in toc -->
 
 This tutorial shows up how to build a docker image with the complex 
 build configurations.
 
+
+# Table of Content <!-- omit in toc -->
+
+- [What version of Docker is this tutorial targeting?](#what-version-of-docker-is-this-tutorial-targeting)
+- [Why do we need the Build Context flag?](#why-do-we-need-the-build-context-flag)
+- [What is the Build Context flag?](#what-is-the-build-context-flag)
+  - [Load build context from a Local Directory](#load-build-context-from-a-local-directory)
+  - [Load build context from a Git repository](#load-build-context-from-a-git-repository)
+    - [Clone the git repository via HTTPS](#clone-the-git-repository-via-https)
+    - [Clone the git repository via SSH](#clone-the-git-repository-via-ssh)
+  - [Load build context from a tarball via HTTP URL](#load-build-context-from-a-tarball-via-http-url)
+  - [Load build context from a docker image](#load-build-context-from-a-docker-image)
+- [CLI Commands for building and validating the docker image](#cli-commands-for-building-and-validating-the-docker-image)
+  - [Build docker image with tag](#build-docker-image-with-tag)
+  - [Investigate image content](#investigate-image-content)
+  - [Write build image log to a file](#write-build-image-log-to-a-file)
+  - [Ceate a container for a service](#ceate-a-container-for-a-service)
+- [Pitfalls](#pitfalls)
+  - [Using `["/bin/sh", "-c"]` in `CMD` or `ENTRYPOINT` when you want to receive the system signals](#using-binsh--c-in-cmd-or-entrypoint-when-you-want-to-receive-the-system-signals)
+  - [Using `yarn` script in `CMD` or `ENTRYPOINT` when you want to receive the system signals](#using-yarn-script-in-cmd-or-entrypoint-when-you-want-to-receive-the-system-signals)
+  - [Build context is always built from the root directory](#build-context-is-always-built-from-the-root-directory)
+    - [Execute `docker build` in the root directory](#execute-docker-build-in-the-root-directory)
+    - [Execute `docker build` in the workspace directory](#execute-docker-build-in-the-workspace-directory)
+    - [Conclusion](#conclusion)
+- [Best practice](#best-practice)
+- [Reference](#reference)
 
 # What version of Docker is this tutorial targeting?
 
@@ -159,18 +185,24 @@ executing instructions and there is no other way to provide access
 tokens to `Buildx`. The solution for this circumstance could use the 
 following `RUN` instruction to clone the remote repository.
 ```dockerfile
-RUN --mount=type=secret,id=${SECRET_ID} git clone ${REPO_URL}
+RUN --mount=type=secret,id=${SECRET_ID} \
+    USERNAME=$(cat /run/secrets/USERNAME) \
+    PASSWORD=$(cat /run/secrets/PASSWORD) \
+    git clone https://${USERNAME}:${PASSWORD}@${GIT_HOSTING_NAME}/${REPOSITORY}.git
 ```
 
-
 ### Clone the git repository via SSH
-To be continued
-> repository via SSH connectoin. The error message is 
-> `unsupported context source **git@github.com** for ` when the 
-> `--build-context` is an SSH URL to the git repositroy or is a private 
-> repository.
-> 
+
+Based on the experiment, it looks like `Buildx` doesn't support cloning 
+a git repository via SSH connection. The error message is 
+`unsupported context source **git@github.com** for ${BUILD_CONTEXT_NAME}`.
 > [Learn More](scripts/complex-builds/greeting/pack_from_git_ssh.sh)
+> 
+
+To resolve this issue, it is recommended using `--ssh` with `Buildx` to 
+clone the repository by `RUN --mount=type=ssh git clone ${GIT_REPO_URL}`.
+Then the build context will be cloned into the same folder structure listed 
+at [Clone the git repository via HTTPS](#clone-the-git-repository-via-https)
 
 
 ## Load build context from a tarball via HTTP URL
@@ -322,11 +354,11 @@ ENTRYPOINT ["/bin/sh", "-c", "yarn greeting serve"]
 > [Learn More](Dockerfile_entrypoint_yarn_sh)
 > 
 
-However, the `dist/server.js` excuedted in `serve` script cannot receive 
-system signal, such as `Ctrl+C`, from the command prompt when the 
-`CMD` and `ENTRYPOINT` instructions use the `yarn` script. As a result, 
-please do not use `yarn` script when you would like to receive system 
-signals.
+However, the `dist/server.js` is executed in `serve` script cannot 
+receive system signal, such as `Ctrl+C`, from the command prompt when 
+the `CMD` and `ENTRYPOINT` instructions use the `yarn` script. As a 
+result, please do not use `yarn` script when you would like to receive 
+system signals.
 
 
 ## Build context is always built from the root directory
@@ -336,7 +368,7 @@ directory, but it may not be true if the command is executed in the sub
 directory or other directories. There are two examples explaining what 
 is the difference as follows:
 
-### Execute `docker build` in root directory
+### Execute `docker build` in the root directory
 
 It's easy to build a docker image in the root directory as executing:
 ```bash
@@ -353,7 +385,7 @@ Dockerfile_build_context  Dockerfile_cmd_yarn_sh    Dockerfile_entrypoint_yarn_s
 Dockerfile_cmd_sh         Dockerfile_entrypoint_sh  Dockerfile_greeting            dockerfiles  package.json    workspaces
 ```
 
-### Execute `docker build` in workspace directory
+### Execute `docker build` in the workspace directory
 
 In this case, the location of `Dockerfile` must be given in the command line 
 prompt because there is no `Dockerfile` in `workspaces` directory as follows:

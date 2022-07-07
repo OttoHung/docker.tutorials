@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1.4
-## The above line indicates what version of Dockerfile is in use.
+## The above line indicates what version of Dockerfile is.
 
 ## This docker file build image from a specific workspace
 ## In this case, greeting service will be included
@@ -7,31 +7,35 @@
 #####################################################################
 # Caution:
 #   This dockerfile cannot build image due to buildx download git 
-#   repository before executing instructions and the username and 
-#   password only can be loaded in the `RUN` instruction after the git 
-#   repository has been downloaded.
+#   repository before executing instructions and the SSH key only can
+#   be loaded in the `RUN` instruction after the git repository has 
+#   been downloaded.
 #   Alternatively, using `RUN` instruction to clone git repository as:
-#       RUN --mount=type=secret,id=${SECRET_ID} \
-#           USERNAME=$(cat /run/secrets/USERNAME) \
-#           PASSWORD=$(cat /run/secrets/PASSWORD) \
-#           git clone https://${USERNAME}:${PASSWORD}@${GIT_HOSTING_DOMAIN_NAME}/${USERNAME}/${REPO_NAME}.git
+#       `RUN --mount=type=ssh git clone ${SSH_URL}`
 #   
-#   By using `--secret` in the command prompt, the username and password 
-#   won't be stored in the image based on experiment.
+#   By using `--ssh` in the command prompt, the SSH keys won't be 
+#   stored in the image based on experiment.
 #####################################################################
-
 
 ## Use DOCKER_BUILDKIT=1 in the command line prompt to speed up the build time
 ## *-alpine doesn't have git installed
 FROM node:14.17.1-alpine AS baseBuild
 WORKDIR /build
 
-## This doesn't work because the repository clone process is commenced before 
-## executing instructions. To resolve this issue, please use the following 
-## instruction instead:
-## RUN --secret \
-##  git clone https://${USERNAME}:${PASSWORD}@github.com/${USERNAME}/${REPO_NAME}.git
+## alpine doesn't have openssh-client and git
+RUN apk add --no-cache openssh-client \
+    && apk add git
+
+## This must be run before cloning the git repository
+RUN mkdir -p -m 0700 ~/.ssh \
+    && ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+
+## This doens't work because `buildx` cannot clone git repository due to 
+## this is no way to provide the SSH keys to the clone process.
+## Based on the experiment, the clone process is commenced before executing
+## the first instructions.
 COPY --from=repo ["./", "/build"]
+
 
 ## In order to install modules from private package registry, access token must
 ## be loaded by secret. Due to root is not accessible, the best practice is 
