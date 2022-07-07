@@ -441,3 +441,4 @@ dist  package.json  src  tsconfig.json
 - [Use volumes](https://docs.docker.com/storage/volumes/)
 - [Build context](https://docs.docker.com/engine/reference/commandline/buildx_build/#build-context)
 - [Build images with BuildKit](https://docs.docker.com/develop/develop-images/build_enhancements/#new-docker-build-secret-information)
+- [Document build secrets passed via environment variables](https://github.com/docker/buildx/issues/927)
