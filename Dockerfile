@@ -4,21 +4,24 @@
 ## This docker file build image from all contexts
 
 ## Use DOCKER_BUILDKIT=1 in the command line prompt to speed up the build time
-FROM node:14.17.1 AS baseBuild
+FROM node:14.17.1-alpine AS baseBuild
 
 WORKDIR /build
 ## There are files under workspaces/greeting/dist to app direcotry only
 COPY ["./", "/build"]
 
-## Due to docker cannot access private repository and download packages from private 
-## package registry, it's not recommended to run `yarn install` in dockerfile.
-## Also, the access token should not be used in the docker build because it can be
-## retrieved from history.
-
+## In order to install modules from private package registry, access token must
+## be loaded by secret. Due to root is not accessible, the best practice is 
+## using project location to save access token temporaryly.
+## And run `install` command at the same layer to get the access to access token.
+## Based on https://docs.docker.com/develop/develop-images/build_enhancements/#new-docker-build-secret-information,
+## this secret won't store at the final image at all.
+RUN --mount=type=secret,id=npm,target=/build/.npmrc \
+    yarn install
 RUN yarn build
 
 
-FROM node:14.17.1 AS appBuild
+FROM node:14.17.1-alpine AS appBuild
 WORKDIR /app
 COPY --from=baseBuild ["/build", "/app"]
 EXPOSE 5478
