@@ -8,14 +8,13 @@
 ## *-alpine doesn't have git installed
 FROM node:14.17.1-alpine AS sourceStage
 ARG REPO
-ARG HOSTING
 WORKDIR /source
 
 RUN apk update && apk upgrade \
-    && apk add openssh-client git
-RUN mkdir -p -m 0700 ~/.ssh \
-    && ssh-keyscan -H ${HOSTING} >> ~/.ssh/known_hosts
-RUN --mount=type=ssh git clone ${REPO}
+    && apk add --no-cache git
+RUN --mount=type=secret,id=pat \
+    PAT="$(cat /run/secrets/pat)"; \
+    git clone https://${PAT}@${REPO}
 
 FROM node:14.17.1-alpine AS buildStage
 WORKDIR /build
@@ -38,20 +37,17 @@ WORKDIR /module
 COPY --from=buildStage ["/build/node_modules", "/module/node_modules"]
 COPY --from=buildStage ["/build/package.json", "/module"]
 COPY --from=buildStage ["/build/LICENSE", "/module"]
-COPY --from=buildStage ["/build/workspaces/greeting", "/module/workspaces/greeting"]
 
+## THis line must be executed before others to eliminate build error(xxx is not a directory)
+COPY --from=buildStage ["/build/workspaces/greeting/dist", "/module/workspaces/greeting/dist"]
+
+COPY --from=buildStage ["/build/workspaces/greeting/package.json", "/module/workspaces/greeting"]
 
 ## In this build, all source files are discarded to reduce the size of image
 FROM node:14.17.1-alpine AS appBuild
 WORKDIR /app
-COPY --from=moduleStage ["/module/node_modules", "/app/node_modules"]
-COPY --from=moduleStage ["/module/package.json", "/app"]
-COPY --from=moduleStage ["/module/LICENSE", "/app"]
+COPY --from=moduleStage ["/module", "/app"]
 
-## THis line must be executed before others to eliminate build error(xxx is not a directory)
-COPY --from=moduleStage ["/module/workspaces/greeting/dist", "/app/workspaces/greeting/dist"]
-
-COPY --from=moduleStage ["/module/workspaces/greeting/package.json", "/app/workspaces/greeting"]
 EXPOSE 5478
 
 ## To use `ENTRYPOINT` due to this image should be started up

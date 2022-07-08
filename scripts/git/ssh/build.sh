@@ -1,4 +1,4 @@
-IMG_NAME=docker.tutorials:git-ssh
+IMG_NAME=docker.tutorials:git-ssh-clone
 export DOCKER_BUILDKIT=1
 
 echo "Start to build docker image from: " && pwd
@@ -26,5 +26,5 @@ docker buildx build \
    --secret id=npm,src=$HOME/.npmrc \
    --ssh default=$SSH_AUTH_SOCK \
    -t ${IMG_NAME} \
-   -f ./dockerfiles/git-ssh/Dockerfile .
+   -f ./dockerfiles/git/ssh/Dockerfile .
    

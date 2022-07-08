@@ -22,5 +22,5 @@ docker buildx build \
    --secret id=npm,src=$HOME/.npmrc \
    --secret id=pat \
    -t ${IMG_NAME} \
-   -f ./dockerfiles/git-https-private-pat/Dockerfile .
+   -f ./dockerfiles/git/https/private/Dockerfile .
    
