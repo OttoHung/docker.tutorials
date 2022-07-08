@@ -23,4 +23,4 @@ docker buildx build \
    --secret id=npm,src=$HOME/.npmrc \
    --ssh default=$SSH_AUTH_SOCK \
    -t ${IMG_NAME} \
-   -f ./dockerfiles/greeting_git_ssh .
+   -f ./dockerfiles/build-contexts/git/ssh/Dockerfile .
