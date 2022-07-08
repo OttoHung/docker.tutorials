@@ -24,4 +24,4 @@ docker buildx build \
    --build-arg SOURCE_NAME=${SOURCE_NAME} \
    --secret id=npm,src=$HOME/.npmrc \
    -t ${IMG_NAME} \
-   -f ./dockerfiles/greeting_tarball .
+   -f ./dockerfiles/build-contexts/tarball/Dockerfile .
