@@ -11,4 +11,4 @@ docker buildx build \
    --build-context repo=${REPO} \
    --secret id=npm,src=$HOME/.npmrc \
    -t ${IMG_NAME} \
-   -f ./dockerfiles/greeting_git_https .
+   -f ./dockerfiles/build-contexts/git/https/public/Dockerfile .
