@@ -23,7 +23,8 @@ FROM node:14.17.1-alpine AS baseBuild
 WORKDIR /build
 
 ## alpine doesn't have openssh-client and git
-RUN apk add --no-cache openssh-client \
+RUN apk update && apk upgrade \
+    apk add --no-cache openssh-client \
     && apk add git
 
 ## This must be run before cloning the git repository
