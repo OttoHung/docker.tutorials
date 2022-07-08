@@ -24,8 +24,7 @@ WORKDIR /build
 
 ## alpine doesn't have openssh-client and git
 RUN apk update && apk upgrade \
-    apk add --no-cache openssh-client \
-    && apk add git
+    apk add --no-cache openssh-client git
 
 ## This must be run before cloning the git repository
 RUN mkdir -p -m 0700 ~/.ssh \
