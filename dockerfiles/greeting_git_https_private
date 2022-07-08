@@ -11,10 +11,9 @@
 #   password only can be loaded in the `RUN` instruction after the git 
 #   repository has been downloaded.
 #   Alternatively, using `RUN` instruction to clone git repository as:
-#       RUN --mount=type=secret,id=${SECRET_ID} \
-#           USERNAME=$(cat /run/secrets/USERNAME) \
-#           PASSWORD=$(cat /run/secrets/PASSWORD) \
-#           git clone https://${USERNAME}:${PASSWORD}@${GIT_HOSTING_DOMAIN_NAME}/${USERNAME}/${REPO_NAME}.git
+#   RUN --mount=type=secret,id=pat \
+#       PAT="$(cat /run/secrets/pat)"; \
+#       git clone https://${PAT}@${REPO}
 #   
 #   By using `--secret` in the command prompt, the username and password 
 #   won't be stored in the image based on experiment.
@@ -29,8 +28,9 @@ WORKDIR /build
 ## This doesn't work because the repository clone process is commenced before 
 ## executing instructions. To resolve this issue, please use the following 
 ## instruction instead:
-## RUN --secret \
-##  git clone https://${USERNAME}:${PASSWORD}@github.com/${USERNAME}/${REPO_NAME}.git
+##   RUN --mount=type=secret,id=pat \
+##       PAT="$(cat /run/secrets/pat)"; \
+##       git clone https://${PAT}@${REPO}
 COPY --from=repo ["./", "/build"]
 
 ## In order to install modules from private package registry, access token must
