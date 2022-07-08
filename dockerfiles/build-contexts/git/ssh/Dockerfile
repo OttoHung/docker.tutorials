@@ -19,8 +19,8 @@
 
 ## Use DOCKER_BUILDKIT=1 in the command line prompt to speed up the build time
 ## *-alpine doesn't have git installed
-FROM node:14.17.1-alpine AS baseBuild
-WORKDIR /build
+FROM node:14.17.1-alpine AS sourceStage
+WORKDIR /source
 
 ## alpine doesn't have openssh-client and git
 RUN apk update && apk upgrade \
@@ -34,9 +34,12 @@ RUN mkdir -p -m 0700 ~/.ssh \
 ## this is no way to provide the SSH keys to the clone process.
 ## Based on the experiment, the clone process is commenced before executing
 ## the first instructions.
-COPY --from=repo ["./", "/build"]
+COPY --from=repo ["./", "/source"]
 
+FROM node:14.17.1-alpine AS buildStage
+WORKDIR /build
 
+COPY --from=sourceStage ["/source", "/build"]
 ## In order to install modules from private package registry, access token must
 ## be loaded by secret. Due to root is not accessible, the best practice is 
 ## using project location to save access token temporaryly.
@@ -48,25 +51,22 @@ RUN --mount=type=secret,id=npm,target=/build/.npmrc \
 RUN yarn build
 
 
-FROM node:14.17.1-alpine AS moduleBuild
+FROM node:14.17.1-alpine AS moduleStage
 WORKDIR /module
-COPY --from=baseBuild ["/build/node_modules", "/module/node_modules"]
-COPY --from=baseBuild ["/build/package.json", "/module"]
-COPY --from=baseBuild ["/build/LICENSE", "/module"]
-COPY --from=baseBuild ["/build/workspaces/greeting", "/module/workspaces/greeting"]
+COPY --from=buildStage ["/build/node_modules", "/module/node_modules"]
+COPY --from=buildStage ["/build/package.json", "/module"]
+COPY --from=buildStage ["/build/LICENSE", "/module"]
 
+## THis line must be executed before others to eliminate build error(xxx is not a directory)
+COPY --from=buildStage ["/build/workspaces/greeting/dist", "/module/workspaces/greeting/dist"]
+
+COPY --from=buildStage ["/build/workspaces/greeting/package.json", "/module/workspaces/greeting"]
 
 ## In this build, all source files are discarded to reduce the size of image
 FROM node:14.17.1-alpine AS appBuild
 WORKDIR /app
-COPY --from=moduleBuild ["/module/node_modules", "/app/node_modules"]
-COPY --from=moduleBuild ["/module/package.json", "/app"]
-COPY --from=moduleBuild ["/module/LICENSE", "/app"]
+COPY --from=moduleBuild ["/module", "/app"]
 
-## THis line must be executed before others to eliminate build error(xxx is not a directory)
-COPY --from=moduleBuild ["/module/workspaces/greeting/dist", "/app/workspaces/greeting/dist"]
-
-COPY --from=moduleBuild ["/module/workspaces/greeting/package.json", "/app/workspaces/greeting"]
 EXPOSE 5478
 
 ## To use `ENTRYPOINT` due to this image should be started up
