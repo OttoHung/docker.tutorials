@@ -19,6 +19,8 @@ HOSTING_NAME=github.com
 # the alternative way to load a specific private key without including
 # everything. For security concern, it is recommended to encrypt private 
 # key by passphrass.
+#
+# Secret is used to install npm packages in docker deamon.
 docker buildx build \
    --build-arg REPO=${SOURCE} \
    --build-arg REPO_NAME=${SOURCE_FOLDER_NAME} \

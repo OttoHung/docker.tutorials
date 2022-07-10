@@ -15,6 +15,8 @@ REPO_NAME=private-test
 #
 # For security concern, **DO NOT** hard-coding username and password
 # in the command prompt.
+#
+# Secret is used to install npm packages in docker deamon.
 pat=${PAT} \
 docker buildx build \
    --build-arg REPO=${SOURCE} \

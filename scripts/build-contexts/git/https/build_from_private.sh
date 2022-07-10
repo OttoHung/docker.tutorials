@@ -15,6 +15,9 @@ REPO=https://github.com/OttoHung/private-test.git#main
 #
 # For security concern, **DO NOT** hard-coding username and password
 # in the command prompt.
+#
+# The name of build context must be lowercase.
+# Secret is used to install npm packages in docker deamon.
 pat=${PAT} \
 docker buildx build \
    --build-context repo=${REPO} \

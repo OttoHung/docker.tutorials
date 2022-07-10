@@ -18,6 +18,9 @@ REPO=git@github.com:OttoHung/docker.tutorial.git#main
 # the alternative way to load a specific private key without including
 # everything. For security concern, it is recommended to encrypt private 
 # key by passphrass.
+#
+# The name of build context must be lowercase.
+# Secret is used to install npm packages in docker deamon.
 docker buildx build \
    --build-context repo=${REPO} \
    --secret id=npm,src=$HOME/.npmrc \

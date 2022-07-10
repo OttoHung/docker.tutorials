@@ -7,6 +7,8 @@ echo "Start to build docker image from: " && pwd
 REPO=https://github.com/OttoHung/docker.tutorials.git#main
 
 # Tilde(~) doesn't work in `Dockerfile`, please use $HOME instead
+# The name of build context must be lowercase.
+# Secret is used to install npm packages in docker deamon.
 docker buildx build \
    --build-context repo=${REPO} \
    --secret id=npm,src=$HOME/.npmrc \
