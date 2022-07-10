@@ -2,3 +2,12 @@
 .gitignore
 /.git/
 .eslintrc.json
+jest.config.ts
+node_modules
+/workspaces/**/node_modules
+tests
+/workspaces/**/tests
+dockerfiles
+scripts
+/workspaces/**/scripts
+Dockerfile
