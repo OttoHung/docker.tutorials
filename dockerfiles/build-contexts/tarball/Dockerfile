@@ -7,11 +7,11 @@
 ## Use DOCKER_BUILDKIT=1 in the command line prompt to speed up the build time
 FROM node:14.17.1-alpine as sourceStage
 WORKDIR /source
-ARG tarball_name
+ARG TARBALL_NAME
 
 ## tarball must be downloaded by COPY instruction then be unarchived by tar command
 COPY --from=tarball ["./", "/source"]
-RUN tar -xzf ${tarball_name}
+RUN tar -xzf ${TARBALL_NAME}}
 
 
 FROM node:14.17.1-alpine AS buildStage

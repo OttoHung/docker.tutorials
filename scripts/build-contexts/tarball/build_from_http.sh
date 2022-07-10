@@ -16,11 +16,11 @@ TARBALL_NAME=docker.tutorials-tarball.tar.gz
 # --build-arg must be declared and referenced in the `Dockerfile`
 SOURCE_NAME=docker.tutorials-tarball
 
-# Alternatively, the following command line prompt is 
-# used to buid docker image in `dockerfiles` folder
+# The name of build context must be lowercase.
+# Secret is used to install npm packages in docker deamon.
 docker buildx build \
    --build-context tarball=${TARBALL} \
-   --build-arg tarball_name=${TARBALL_NAME} \
+   --build-arg TARBALL_NAME=${TARBALL_NAME} \
    --build-arg SOURCE_NAME=${SOURCE_NAME} \
    --secret id=npm,src=$HOME/.npmrc \
    -t ${IMG_NAME} \
