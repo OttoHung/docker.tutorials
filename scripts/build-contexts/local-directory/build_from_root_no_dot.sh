@@ -5,8 +5,10 @@ echo "Start to build docker image from: " && pwd
 
 # Build docker image at root directory
 # The name of build context must be lowercase
+# Secret is used to install npm packages in docker deamon.
 docker buildx build \
     --build-context repo=. \
-    --build-context greeting=workspaces/greeting \
+    --build-context app=workspaces/greeting \
+    --secret id=npm,src=$HOME/.npmrc \
     -t ${IMG_NAME} \
-    -f ./dockerfiles/greeting .
+    -f ./dockerfiles/build-contexts/local-directory/Dockerfile .
