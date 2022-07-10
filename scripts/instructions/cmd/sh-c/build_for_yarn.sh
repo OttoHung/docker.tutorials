@@ -8,4 +8,4 @@ echo "Start to build docker image from: " && pwd
 docker build \
         --secret id=npm,src=$HOME/.npmrc \
         -t ${IMG_NAME} \
-        -f Dockerfile_cmd_yarn_sh .
+        -f ./dockerfiles/instructions/cmd/sh-c/yarn/Dockerfile .
