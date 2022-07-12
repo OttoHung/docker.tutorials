@@ -25,5 +25,6 @@ docker buildx build \
    --build-context repo=${REPO} \
    --secret id=npm,src=$HOME/.npmrc \
    --ssh default=$SSH_AUTH_SOCK \
+   --no-cache \
    -t ${IMG_NAME} \
    -f ./dockerfiles/build-contexts/git/ssh/Dockerfile .

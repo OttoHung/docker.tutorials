@@ -9,6 +9,7 @@ SOURCE=ghcr.io/ottohung/docker.tutorials:git-https
 # The name of build context must be lowercase.
 docker buildx build \
    --build-context docker_tutorial=docker-image://${SOURCE} \
+   --no-cache \
    -t ${IMG_NAME} \
    -f ./dockerfiles/build-contexts/docker-image/Dockerfile .
    

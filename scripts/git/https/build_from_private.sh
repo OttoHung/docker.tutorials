@@ -23,6 +23,7 @@ docker buildx build \
    --build-arg REPO_NAME=${REPO_NAME} \
    --secret id=npm,src=$HOME/.npmrc \
    --secret id=pat \
+   --no-cache \
    -t ${IMG_NAME} \
    -f ./dockerfiles/git/https/private/Dockerfile .
    

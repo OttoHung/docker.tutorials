@@ -27,6 +27,7 @@ docker buildx build \
    --build-arg HOSTING=${HOSTING_NAME} \
    --secret id=npm,src=$HOME/.npmrc \
    --ssh default=$SSH_AUTH_SOCK \
+   --no-cache \
    -t ${IMG_NAME} \
    -f ./dockerfiles/git/ssh/Dockerfile .
    

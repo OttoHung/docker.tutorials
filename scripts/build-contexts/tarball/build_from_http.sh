@@ -23,5 +23,6 @@ docker buildx build \
    --build-arg TARBALL_NAME=${TARBALL_NAME} \
    --build-arg SOURCE_NAME=${SOURCE_NAME} \
    --secret id=npm,src=$HOME/.npmrc \
+   --no-cache \
    -t ${IMG_NAME} \
    -f ./dockerfiles/build-contexts/tarball/Dockerfile .

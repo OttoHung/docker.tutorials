@@ -10,5 +10,6 @@ docker buildx build \
     --build-context repo=./ \
     --build-context app=./workspaces/greeting \
     --secret id=npm,src=$HOME/.npmrc \
+    --no-cache \
     -t ${IMG_NAME} \
     -f ./dockerfiles/build-contexts/local-directory/Dockerfile .

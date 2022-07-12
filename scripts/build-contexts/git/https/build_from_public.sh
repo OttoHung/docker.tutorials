@@ -12,5 +12,6 @@ REPO=https://github.com/OttoHung/docker.tutorials.git#main
 docker buildx build \
    --build-context repo=${REPO} \
    --secret id=npm,src=$HOME/.npmrc \
+   --no-cache \
    -t ${IMG_NAME} \
    -f ./dockerfiles/build-contexts/git/https/public/Dockerfile .
