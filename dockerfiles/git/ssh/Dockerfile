@@ -46,7 +46,7 @@ COPY --from=buildStage ["/build/workspaces/greeting/package.json", "/module/work
 
 
 ## In this build, all source files are discarded to reduce the size of image
-FROM node:14.17.1-alpine AS appBuild
+FROM node:14.17.1-alpine AS appStage
 WORKDIR /app
 COPY --from=moduleStage ["/module", "/app"]
 

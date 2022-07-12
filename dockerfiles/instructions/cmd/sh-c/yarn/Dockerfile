@@ -4,7 +4,7 @@
 ## This docker file build image from all contexts
 
 ## Use DOCKER_BUILDKIT=1 in the command line prompt to speed up the build time
-FROM node:14.17.1-alpine AS baseBuild
+FROM node:14.17.1-alpine AS baseStage
 
 WORKDIR /build
 ## There are files under workspaces/greeting/dist to app direcotry only
@@ -21,9 +21,21 @@ RUN --mount=type=secret,id=npm,target=/build/.npmrc \
 RUN yarn build
 
 
-FROM node:14.17.1-alpine AS appBuild
+FROM node:14.17.1-alpine AS moduleStage
+WORKDIR /module
+COPY --from=buildStage ["/build/node_modules", "/module/node_modules"]
+COPY --from=buildStage ["/build/package.json", "/module"]
+COPY --from=buildStage ["/build/LICENSE", "/module"]
+
+## THis line must be executed before others to eliminate build error(xxx is not a directory)
+COPY --from=buildStage ["/build/workspaces/greeting/dist", "/module/workspaces/greeting/dist"]
+
+COPY --from=buildStage ["/build/workspaces/greeting/package.json", "/module/workspaces/greeting"]
+
+
+FROM node:14.17.1-alpine AS appStage
 WORKDIR /app
-COPY --from=baseBuild ["/build", "/app"]
+COPY --from=moduleStage ["/module", "/app"]
 EXPOSE 5478
 
 ## Failed to recive system signals

@@ -42,7 +42,7 @@ COPY --from=buildStage ["/build/workspaces/greeting/dist", "/module/workspaces/g
 COPY --from=buildStage ["/build/workspaces/greeting/package.json", "/module/workspaces/greeting"]
 
 
-FROM node:14.17.1-alpine AS appBuild
+FROM node:14.17.1-alpine AS appStage
 WORKDIR /app
 
 COPY --from=moduleStage ["/module", "/app"]

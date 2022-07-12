@@ -11,7 +11,7 @@ ARG TARBALL_NAME
 
 ## tarball must be downloaded by COPY instruction then be unarchived by tar command
 COPY --from=tarball ["./", "/source"]
-RUN tar -xzf ${TARBALL_NAME}}
+RUN tar -xzf ${TARBALL_NAME}
 
 
 FROM node:14.17.1-alpine AS buildStage
@@ -42,7 +42,7 @@ COPY --from=buildStage ["/build/workspaces/greeting/dist", "/module/workspaces/g
 COPY --from=buildStage ["/build/workspaces/greeting/package.json", "/module/workspaces/greeting"]
 
 ## In this build, all source files are discarded to reduce the size of image
-FROM node:14.17.1-alpine AS appBuild
+FROM node:14.17.1-alpine AS appStage
 WORKDIR /app
 COPY --from=moduleStage ["/module", "/app"]
 
