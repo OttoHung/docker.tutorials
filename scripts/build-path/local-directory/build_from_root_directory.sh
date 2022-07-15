@@ -9,4 +9,4 @@ docker build \
         --secret id=npm,src=$HOME/.npmrc \
         --no-cache \
         -t ${IMG_NAME} \
-        -f ./dockerfiles/build-path/local-directory/Dockerfile .
+        -f ../dockerfiles/execution-location/Dockerfile .
