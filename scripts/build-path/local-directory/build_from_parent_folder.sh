@@ -11,5 +11,5 @@ docker build \
         --secret id=npm,src=$HOME/.npmrc \
         --no-cache \
         -t ${IMG_NAME} \
-        -f ../dockerfiles/execution-location/Dockerfile \
+        -f ../dockerfiles/build-path/local-directory/Dockerfile \
         ../workspaces/greeting
