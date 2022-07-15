@@ -3,7 +3,7 @@ export DOCKER_BUILDKIT=1
 
 echo "Start to build docker image from: " && pwd
 
-# Build docker image from whole project
+# Build docker image by context in current repo.
 # Secret is used to install npm packages in docker deamon.
 docker build \
         --secret id=npm,src=$HOME/.npmrc \

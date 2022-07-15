@@ -3,7 +3,7 @@ export DOCKER_BUILDKIT=1
 
 echo "Start to build docker image from: " && pwd
 
-# Build docker image from module under "/workspaces"
+# Build docker image by context in the module under "/workspaces"
 # Secret is used to install npm packages in docker deamon.
 cd workspaces
 cd greeting
