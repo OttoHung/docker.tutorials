@@ -14,7 +14,7 @@ echo "Start to build docker image from: ${REPO}"
 # Build docker image from public git repository via git@
 #
 # The path of `Dockerfile` is not required because this 
-# approach gathers `Dockerfile` from repository.
+# approach gathers `Dockerfile` from root repository.
 docker build \
         --secret id=npm,src=$HOME/.npmrc \
         --no-cache \
