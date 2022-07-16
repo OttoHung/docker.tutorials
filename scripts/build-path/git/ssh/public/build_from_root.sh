@@ -1,4 +1,4 @@
-IMG_NAME=docker.tutorials:build-path-git-ssh-public-workspaces
+IMG_NAME=docker.tutorials:build-path-git-ssh-public
 
 ## BuildKit cannot be used in this case because it is not supported yet.
 export DOCKER_BUILDKIT=0
