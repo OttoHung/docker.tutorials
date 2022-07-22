@@ -206,16 +206,27 @@ at [Clone the git repository via HTTPS](#clone-the-git-repository-via-https)
 
 ## Load build context from a tarball via HTTP URL
 
-Build context flag also supports tarball(`*.tar` or `*.tar.gz`) and it 
-can be loaded via HTTP URL as:
+Build context flag also supports downloading tarball(`*.tar` or `*.tar.gz`) 
+via a HTTP URL as:
 ```bash
 docker buildx build \
   --build-context dockerTutorial=https://github.com/OttoHung/docker.tutorials/archive/refs/tags/tarball.tar.gz \
   -t ${imageName}:${tag} \
   .
 ```
-> [Learn More](scripts/complex-builds/greeting/pack_from_tarball.sh)
+> [Learn More](../scripts/build-contexts/tarball/build_from_http.sh)
 > 
+
+Once the tarball file has been downloaded, it is required to unpack tarball 
+before copying the contents to other work directory. On macOS, `tar -xzf` 
+could be used to unpack the tarball.
+[[Learn More](../dockerfiles/build-contexts/tarball/Dockerfile)]
+
+It is recommended double-checking the directory name is as same as the 
+tarball name before making a tarball. If the names of both are different, 
+such as the tarball packed by GitHub Release, the folder name must be given 
+to the `dockerfile` to copy the contents because the tarball name is not 
+the same.
 
 
 ## Load build context from a docker image
