@@ -28,3 +28,13 @@ docker buildx build \
    --no-cache \
    -t ${IMG_NAME} \
    -f ./dockerfiles/build-contexts/git/ssh/Dockerfile .
+
+## Caution:
+## This approach doesn't work due to `Buildx` clones the remote repository
+## before executing `RUN` instruction and there is no interface to assign
+## secrets to the clone process.
+##
+## Solution:
+## The most secured way to clone a git repository via SSH is using `--ssh` 
+## to pass ssh agent or configuration to docker deamon then execute 
+## `git clone` with the `RUN` instruction.

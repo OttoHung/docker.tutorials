@@ -26,3 +26,13 @@ docker buildx build \
    --no-cache \
    -t ${IMG_NAME} \
    -f ./dockerfiles/build-contexts/git/https/private/Dockerfile .
+
+
+## Caution:
+## This approach doesn't work due to `Buildx` clones the remote repository
+## before executing `RUN` instruction and there is no interface to assign
+## secrets to the clone process.
+##
+## Solution:
+## The most secured way to clone a private repository is use the PAT from
+## --screte and execute `git clone` with the `RUN` instruction
