@@ -3,6 +3,11 @@ export DOCKER_BUILDKIT=1
 
 echo "Start to build docker image from: " && pwd
 
+## Please note that `resources` directory is not on github and 
+## it is an example indicating how to access build context in
+## parent folder. In this code snippet, it jumps into `dockerfiles`
+## directory and execute `docker build` command prompt to simulate 
+## how to access build context in the parent directory.
 cd dockerfiles
 
 # The name of build context must be lowercase.
