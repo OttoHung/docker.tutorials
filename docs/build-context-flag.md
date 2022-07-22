@@ -231,27 +231,47 @@ the same.
 
 ## Load build context from a docker image
 
-Before `Dockerfile` 1.4, the docker image can be loaded by `FROM` 
-instruction with the URL of the image in the `Dockerfile` as:
+`Dockerfile 1.4` supports that the docker image can be loaded by `FROM` 
+instruction with the URL of the image as:
 ```dockerfile
 FROM https://ghcr.io/OttoHung/greeting:latest
 ```
-Or specify the name of the docker image:
+Or specifying the name of the docker image:
 ```dockerfile
 FROM alpine:3.15
 ```
+> [Learn More](../dockerfiles/build-contexts/docker-image/Dockerfile)
+> 
 
-By using the build context flag, the docker image goes with 
-`docker-image://` prefix to tell what docker image to load. For
-example:
+In command prompt, the docker image must 
+go with `docker-image://` prefix to tell what docker image to load. 
+For example:
 ```bash
 docker buildx build
   --build-context alpine=docker-image://alpine:3.15 \
   -t ${imageName}:${tag} \
   .
 ```
+> [Learn More](../scripts/build-contexts/docker-image/build_from_latest.sh)
+> 
 
-> To Do: test how to use `docker-image://` with `GHCR.io`
+Also, image digest following up the tag of image can be used to specify 
+a particular version for the image as:
+```shell
+ghcr.io/ottohung/docker.tutorials:git-https@sha256:b9f33235036f68d3d510a8800e27e3b6514142119cbd5f4862f0506d8cc8552d
+```
+> [Learn More](../scripts/build-contexts/docker-image/build_from_version.sh)
+> 
+
+The benefit of using build context flag for docker image is we can specifying 
+multiple docker images, sucn as base image and image for app, from command 
+prompt dynamically. So that we don't need to modify `dockerfile` when we would 
+like to choose other base image for the build.
+```bash
+docker buildx build
+  --build-context baseImage=docker-image://alpine:3.15 \
+  --build-context appImage=docker-image://node:14.17.1-alpine \
+```
 
 
 # Reference
