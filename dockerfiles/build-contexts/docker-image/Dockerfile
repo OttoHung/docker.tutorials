@@ -6,7 +6,7 @@
 
 ## Use DOCKER_BUILDKIT=1 in the command line prompt to speed up the build time
 ## *-alpine doesn't have git installed
-FROM docker_tutorial AS sourceStage
+FROM image AS sourceStage
 EXPOSE 5478
 
 ## To use `ENTRYPOINT` due to this image should be started up
