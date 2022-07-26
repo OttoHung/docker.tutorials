@@ -1,6 +1,8 @@
 # Build docker image from multiple build contexts <!-- omit in toc -->
 
 - [What version of Docker is this tutorial targeting?](#what-version-of-docker-is-this-tutorial-targeting)
+  - [How to specify the version of `Dockerfile` frontend?](#how-to-specify-the-version-of-dockerfile-frontend)
+  - [How to install/upgrade `Buildx`?](#how-to-installupgrade-buildx)
 - [Why do we need the Build Context flag?](#why-do-we-need-the-build-context-flag)
 - [What is the Build Context flag?](#what-is-the-build-context-flag)
   - [Load build context from a Local Directory](#load-build-context-from-a-local-directory)
@@ -19,6 +21,28 @@ All of the examples and use cases are working against `Dockerfile`
 and `Buildx` before starting this tutorial. If you would like to 
 install or upgrade the Docker Engine, please refers to   
 [Install Docker Engine](https://docs.docker.com/engine/install/) page. 
+
+
+## How to specify the version of `Dockerfile` frontend?
+
+To specify the version of a `Dockerfile` frontend, by adding a line of code at the top of the file as:
+```dockerfile
+# syntax=docker/dockerfile:1.4
+
+## List other instructions after this line
+```
+> [Learn More](https://docs.docker.com/engine/reference/builder/#external-dockerfile-frontend)
+> 
+
+
+## How to install/upgrade `Buildx`?
+
+It's very easy to install or upgrade `Buildx` tool by executing:
+```bash
+docker buildx install
+```
+> [Learn More](https://docs.docker.com/engine/reference/commandline/buildx_install/)
+> 
 
 
 # Why do we need the Build Context flag?
@@ -157,7 +181,7 @@ repository in the `WORKDIR`. For example, the name of repository is
 named `docker.tutorials` in this case:
 ```
 .
-+-- ${WORKDIR}
++-- ${WORK_DIR}
 |   +-- docker.tutorials
 |       +-- README.md
 |       +-- node_modules
@@ -258,7 +282,10 @@ docker buildx build
 Also, image digest following up the tag of image can be used to specify 
 a particular version for the image as:
 ```shell
-ghcr.io/ottohung/docker.tutorials:git-https@sha256:b9f33235036f68d3d510a8800e27e3b6514142119cbd5f4862f0506d8cc8552d
+docker buildx build
+  --build-context alpine=docker-image://ghcr.io/ottohung/docker.tutorials:git-https@sha256:b9f33235036f68d3d510a8800e27e3b6514142119cbd5f4862f0506d8cc8552d \
+  -t ${imageName}:${tag} \
+  .
 ```
 > [Learn More](../scripts/build-contexts/docker-image/build_from_version.sh)
 > 
@@ -276,8 +303,9 @@ docker buildx build
 
 # Reference
 
-- [Dockerfiles now Support Multiple Build Contexts](https://www.docker.com/blog/dockerfiles-now-support-multiple-build-contexts/)
 - [Best practices for writing Dockerfiles](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/)
 - [Build context](https://docs.docker.com/engine/reference/commandline/buildx_build/#build-context)
 - [Build images with BuildKit](https://docs.docker.com/develop/develop-images/build_enhancements/#new-docker-build-secret-information)
-- 
+- [Dockerfile Reference](https://docs.docker.com/engine/reference/builder/)
+- [Dockerfiles now Support Multiple Build Contexts](https://www.docker.com/blog/dockerfiles-now-support-multiple-build-contexts/)
+- [Docker build](https://docs.docker.com/engine/reference/commandline/build/)
