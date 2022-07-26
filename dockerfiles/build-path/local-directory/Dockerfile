@@ -35,7 +35,10 @@ COPY --from=buildStage ["/build/workspaces/greeting/package.json", "/module/work
 
 FROM node:14.17.1-alpine AS appStage
 WORKDIR /app
+RUN apk --no-cache add curl
 COPY --from=moduleStage ["/module", "/app"]
 EXPOSE 5478
+
+HEALTHCHECK CMD ["/bin/sh", "-c", "curl --fail 0.0.0.0:5478 || exit 1"]
 
 CMD ["node", "workspaces/greeting/dist/server.js" ]

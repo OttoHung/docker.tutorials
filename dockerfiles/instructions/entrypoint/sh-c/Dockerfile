@@ -37,9 +37,12 @@ COPY --from=buildStage ["/build/workspaces/greeting/package.json", "/module/work
 ## In this build, all source files are discarded to reduce the size of image
 FROM node:14.17.1-alpine AS appStage
 WORKDIR /app
+RUN apk --no-cache add curl
 COPY --from=moduleStage ["/module", "/app"]
 
 EXPOSE 5478
+
+HEALTHCHECK CMD ["/bin/sh", "-c", "curl --fail 0.0.0.0:5478 || exit 1"]
 
 ## To use `ENTRYPOINT` due to this image should be started up
 ## from `server.js` file

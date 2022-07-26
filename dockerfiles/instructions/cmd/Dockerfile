@@ -32,12 +32,14 @@ COPY --from=buildStage ["/build/workspaces/greeting/dist", "/module/workspaces/g
 
 COPY --from=buildStage ["/build/workspaces/greeting/package.json", "/module/workspaces/greeting"]
 
-
 FROM node:14.17.1-alpine AS appStage
 WORKDIR /app
+RUN apk --no-cache add curl
 COPY --from=moduleStage ["/module", "/app"]
 
 EXPOSE 5478
+
+HEALTHCHECK CMD ["/bin/sh", "-c", "curl --fail 0.0.0.0:5478 || exit 1"]
 
 ## Failed to receive system signal
 CMD ["node", "workspaces/greeting/dist/server.js" ]
