@@ -5,7 +5,7 @@ This tutorial shows up how to build a docker image.
 
 # Table of Content <!-- omit in toc -->
 
-- [CLI Commands for building and validating the docker image](#cli-commands-for-building-and-validating-the-docker-image)
+- [CLI Commands for building and inspecting the docker image](#cli-commands-for-building-and-inspecting-the-docker-image)
   - [Build docker image with tag](#build-docker-image-with-tag)
   - [Investigate image content](#investigate-image-content)
   - [Write build image log to a file](#write-build-image-log-to-a-file)
@@ -22,7 +22,7 @@ This tutorial shows up how to build a docker image.
 
 
 
-# CLI Commands for building and validating the docker image
+# CLI Commands for building and inspecting the docker image
 
 ## Build docker image with tag
 
@@ -211,12 +211,8 @@ dist  package.json  src  tsconfig.json
 
 # Reference
 
-- [Dockerfiles now Support Multiple Build Contexts](https://www.docker.com/blog/dockerfiles-now-support-multiple-build-contexts/)
 - [Best practices for writing Dockerfiles](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/)
-- [Docker build](https://docs.docker.com/engine/reference/commandline/build/)
-- [Dockerfile Reference](https://docs.docker.com/engine/reference/builder/)
 - [Overriding Dockerfile image defaults](https://docs.docker.com/engine/reference/run/#overriding-dockerfile-image-defaults)
 - [Use volumes](https://docs.docker.com/storage/volumes/)
-- [Build context](https://docs.docker.com/engine/reference/commandline/buildx_build/#build-context)
-- [Build images with BuildKit](https://docs.docker.com/develop/develop-images/build_enhancements/#new-docker-build-secret-information)
 - [Document build secrets passed via environment variables](https://github.com/docker/buildx/issues/927)
+  
