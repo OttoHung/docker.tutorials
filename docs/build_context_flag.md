@@ -29,7 +29,7 @@ To specify the version of a `Dockerfile` frontend, by adding a line of code at t
 ```dockerfile
 # syntax=docker/dockerfile:1.4
 
-## List other instructions after this line
+## List other instructions below this line
 ```
 > [Learn More](https://docs.docker.com/engine/reference/builder/#external-dockerfile-frontend)
 > 
