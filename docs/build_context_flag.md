@@ -68,9 +68,9 @@ contexts in the code with CI/CD pipeline.
 
 # What is the Build Context flag?
 
-Build context flag allows developers to define four types of build 
-contexts, including `local directory`, `Git repository`, 
-`HTTP URL to tarball` and `Docker image`.
+Build context flag allows developers to define the build contexts
+from `local directory`, `Git repository`, `HTTP URL` and
+ `Docker Registry`.
 
 The syntax of the build context flag is:
 ```bash
@@ -81,8 +81,9 @@ docker buildx build \
 ```
 `${name}` is the name of the build context, must be lowercase, 
 which will be used in the Dockerfile and the `${pathToContext}` 
-is the location of the build context from `local directory`, 
-`Git repository`, `HTTP URL to tarball` or `Docker image`.
+is the location of the build context which could be 
+`local directory`, `remote git repository`, 
+`HTTP URL to a tarball` and `Docker image`.
 
 Also, `Dockerfile 1.4` supports multiple build contexts for an 
 image by using:
@@ -95,7 +96,7 @@ docker build \
 ```
 
 By using build context flags, developers have the ability to 
-copy the context outside of the build directory.
+copy the context outside of the project directory.
 
 
 ## Load build context from a Local Directory
