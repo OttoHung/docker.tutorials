@@ -53,16 +53,17 @@ repository is given from a path in the docker build command as:
 docker build -t ${imageName}:${tag} .
 ```
 However, this is not allowed to access files outside of specified 
-build context by using parent selector(`../`) for security 
-reasons. This leads to the build context must be at the root 
-directory if the developers would like to build an image for 
-multiple different projects and it results in many `COPY` and 
-`ADD` instructions being written in the `Dockerfile` to achieve 
-this goal, which reduce the readability of code. Fortunately, 
-`Dockerfile 1.4` and `Buildx v0.8+` support multiple build context flags 
-right now. This reduces the complexity of `Dockerfile` and provides 
-more flexibility in organising build contexts in the code with CI/CD 
-pipeline.
+build context by using parent selector(`../`) for security reasons. 
+This leads to the build context must be at the root directory, 
+sometimes it is not the project directory, if the developers would 
+like to build an image for an application referencing multiple 
+resources outside of the folder of application. And it results in 
+many `COPY` and `ADD` instructions being written in the `Dockerfile` 
+to achieve this goal, which reduce the readability of code. 
+Fortunately, `Dockerfile 1.4` and `Buildx v0.8+` support multiple 
+build context flags right now. This reduces the complexity of 
+`Dockerfile` and provides more flexibility in organising build 
+contexts in the code with CI/CD pipeline.
 
 
 # What is the Build Context flag?
