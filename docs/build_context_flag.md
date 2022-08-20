@@ -272,7 +272,7 @@ go with `docker-image://` prefix to tell what docker image to load.
 For example:
 ```bash
 docker buildx build
-  --build-context alpine=docker-image://alpine:3.15 \
+  --build-context image=docker-image://alpine:3.15 \
   -t ${imageName}:${tag} \
   .
 ```
@@ -283,7 +283,7 @@ Also, image digest following up the tag of image can be used to specify
 a particular version for the image as:
 ```shell
 docker buildx build
-  --build-context alpine=docker-image://ghcr.io/ottohung/docker.tutorials:git-https@sha256:b9f33235036f68d3d510a8800e27e3b6514142119cbd5f4862f0506d8cc8552d \
+  --build-context image=docker-image://ghcr.io/ottohung/docker.tutorials:git-https@sha256:b9f33235036f68d3d510a8800e27e3b6514142119cbd5f4862f0506d8cc8552d \
   -t ${imageName}:${tag} \
   .
 ```
