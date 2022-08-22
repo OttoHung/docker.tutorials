@@ -10,7 +10,7 @@ FROM node:14.17.1-alpine AS sourceStage
 WORKDIR /source
 
 ## This is only working when the branch name is specified in the URL, connected 
-## by harsh(#).
+## by hash(#).
 ## Such as `https://github.com/OttoHung/docker.tutorials.git#main`
 COPY --from=repo ["./", "/source"]
 
