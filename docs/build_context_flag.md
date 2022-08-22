@@ -167,7 +167,7 @@ docker buildx build \
 
 It is quite simple to load build context from a Git repository by 
 specifying the URL of the repository and tagging the branch name with 
-harsh(`#`) at the end of the URL as:
+hash(`#`) at the end of the URL as:
 ```bash
 docker buildx build \
   --build-context repo=https://github.com/OttoHung/docker.tutorial.git#main \
