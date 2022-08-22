@@ -57,9 +57,9 @@ build context by using parent selector(`../`) for security reasons.
 This leads to the build context must be at the root directory, 
 sometimes it is not the project directory, if the developers would 
 like to build an image for an application referencing multiple 
-resources outside of the folder of application. And it results in 
+resources outside of the folder of an application. And it results in 
 many `COPY` and `ADD` instructions being written in the `Dockerfile` 
-to achieve this goal, which reduce the readability of code. 
+to achieve this goal, which reduces the readability of code. 
 Fortunately, `Dockerfile 1.4` and `Buildx v0.8+` support multiple 
 build context flags right now. This reduces the complexity of 
 `Dockerfile` and provides more flexibility in organising build 
@@ -95,7 +95,7 @@ docker build \
   .
 ```
 
-By using build context flags, developers have the ability to 
+By using build context flags, developers can 
 copy the context outside of the project directory.
 
 
@@ -147,12 +147,12 @@ docker buildx build \
 ```
 > [Learn More](../scripts/build-contexts/local-directory/build_from_absolute_path.sh)
 >
-> Note: Please do not use `tidle(~)` in the file path. `Buildx` cannot 
+> Note: Please do not use `tilde(~)` in the file path. `Buildx` cannot 
 > find the build context in this form.
 > 
 
 Alternatively, the build context can be accessed by notating double-dot(`..`) when 
-the directory is in the parent folder of current location:
+the directory is in the parent folder of the current location:
 ```bash
 docker buildx build \
    --build-context resources=../resources/icons \
@@ -178,7 +178,7 @@ docker buildx build \
 > 
 
 The build context will be cloned to a directory with the name of the 
-repository in the `WORKDIR`. For example, the name of repository is 
+repository in the `WORKDIR`. For example, the name of a repository is 
 `docker.tutorials` and the build context will be stored in a directory 
 named `docker.tutorials` in this case:
 ```
@@ -209,7 +209,7 @@ RUN --mount=type=secret,id=${SECRET_ID} \
 
 ### Clone the git repository via SSH
 
-By assiging a SSH URL to `Buildx` like:
+By assigning a SSH URL to `Buildx` like:
 ```bash
 docker buildx build \
   --build-context repo=git@github.com:OttoHung/docker.tutorials.git#main \
@@ -222,7 +222,7 @@ However, the remote repository cannot be cloned and an error message
 returned as 
 `unsupported context source **git@github.com** for ${BUILD_CONTEXT_NAME}`.
 
-To resolve this issue, it is recommended using `--ssh` with `Buildx` to 
+To resolve this issue, it is recommended to use `--ssh` with `Buildx` to 
 clone the repository by `RUN --mount=type=ssh git clone ${GIT_REPO_URL}`.
 [[Learn More](../dockerfiles/git/ssh//Dockerfile)]
 
@@ -233,7 +233,7 @@ at [Clone the git repository via HTTPS](#clone-the-git-repository-via-https)
 ## Load build context from a tarball via HTTP URL
 
 Build context flag also supports downloading tarball(`*.tar` or `*.tar.gz`) 
-via a HTTP URL as:
+via an HTTP URL as:
 ```bash
 docker buildx build \
   --build-context dockerTutorial=https://github.com/OttoHung/docker.tutorials/archive/refs/tags/tarball.tar.gz \
@@ -244,11 +244,11 @@ docker buildx build \
 > 
 
 Once the tarball file has been downloaded, it is required to unpack tarball 
-before copying the contents to other work directory. On macOS, `tar -xzf` 
+before copying the contents to another work directory. On macOS, `tar -xzf` 
 could be used to unpack the tarball.
 [[Learn More](../dockerfiles/build-contexts/tarball/Dockerfile)]
 
-It is recommended double-checking the directory name is as same as the 
+It is recommended to double-check the directory name is as same as the 
 tarball name before making a tarball. If the names of both are different, 
 such as the tarball packed by GitHub Release, the folder name must be given 
 to the `dockerfile` to copy the contents because the tarball name is not 
@@ -262,14 +262,14 @@ instruction with the URL of the image as:
 ```dockerfile
 FROM https://ghcr.io/OttoHung/greeting:latest
 ```
-Or specifying the name of the docker image:
+Or specify the name of the docker image:
 ```dockerfile
 FROM alpine:3.15
 ```
 > [Learn More](../dockerfiles/build-contexts/docker-image/Dockerfile)
 > 
 
-In command prompt, the docker image must 
+In the command prompt, the docker image must 
 go with `docker-image://` prefix to tell what docker image to load. 
 For example:
 ```bash
@@ -281,7 +281,7 @@ docker buildx build
 > [Learn More](../scripts/build-contexts/docker-image/build_from_latest.sh)
 > 
 
-Also, image digest following up the tag of image can be used to specify 
+Also, an image digest following up on the tag of the image can be used to specify 
 a particular version for the image as:
 ```shell
 docker buildx build
@@ -292,10 +292,10 @@ docker buildx build
 > [Learn More](../scripts/build-contexts/docker-image/build_from_version.sh)
 > 
 
-The benefit of using build context flag for docker image is we can specifying 
-multiple docker images, sucn as base image and image for app, from command 
-prompt dynamically. So that we don't need to modify `dockerfile` when we would 
-like to choose other base image for the build.
+The benefit of using build context flag for docker image is we can specify 
+multiple docker images, such as base image and image for app, from command 
+prompt dynamically. So that we don't need to modify `Dockerfile` when we would 
+like to choose another base image for the build.
 ```bash
 docker buildx build
   --build-context baseImage=docker-image://alpine:3.15 \
