@@ -192,21 +192,45 @@ named `docker.tutorials` in this case:
 +-- usr
 ```
 
+In the `Dockerfile`, using `COPY --from=${buildContextName}` to copy 
+the build context from the temporary directory into a work directory 
+as follows:
+```dockerfile
+## Stage name is not necessary if it is not a multi-stage build
+## But `FROM` instruction must be provided.
+## Learn more from https://docs.docker.com/engine/reference/builder/#from
+FROM node:14.17.1-alpine AS sourceStage
+WORKDIR /source
+COPY --from=repo ["./", "/source"]
+```
+> [Learn more](../dockerfiles/build-contexts/git/https/public/Dockerfile)
+> 
+
 However, `Buildx` cannot clone a private repository when the access is 
 unauthenticated. An error message is returned as 
-`fatal: could not read Username for 'https://github.com': terminal prompts disabled`. [[Learn More](../scripts//build-contexts/git/https/build_from_private.sh)]
-
-It looks like `Buildx` clones the repository before 
+`fatal: could not read Username for 'https://github.com': terminal prompts disabled`. [[Learn More](../scripts//build-contexts/git/https/build_from_private.sh)] It looks like `Buildx` clones the repository before 
 executing instructions and there is no other way to provide access 
-tokens to `Buildx` currently. The solution for this circumstance could use the 
-following `RUN` instruction to clone the remote repository which is much safer
-than using Personal Acess Token (PAT) in the URL.
+tokens to `Buildx` currently. 
+
+The solution for this circumstance could use 
+`--secret` to pass Personal Access Token(PAT) to `Buildx`:
+```bash
+pat=${PAT} \
+docker buildx build \
+   --secret id=pat \
+   -t ${IMG_NAME} \
+   .
+```
+> [Learn More](../scripts/git/https/build_from_private.sh)
+> 
+Then using `RUN` instruction to clone the remote repository which is 
+much safer than embedded the PAT in the URL in the command line.
 ```dockerfile
 RUN --mount=type=secret,id=${SECRET_ID} \
     PAT=$(cat /run/secrets/${SECRET_ID}) \
     git clone https://${PAT}@${REPO_URL}.git
 ```
-> [Learn More](../dockerfiles//git/https/private/Dockerfile)
+> [Learn More](../dockerfiles/git/https/private/Dockerfile)
 
 ### Clone the git repository via SSH
 
