@@ -193,8 +193,9 @@ named `docker.tutorials` in this case:
 ```
 
 However, `Buildx` cannot clone a private repository when the access is 
-unauthenticated with an error message returned as 
+unauthenticated. An error message is returned as 
 `fatal: could not read Username for 'https://github.com': terminal prompts disabled`. [[Learn More](../scripts//build-contexts/git/https/build_from_private.sh)]
+
 It looks like `Buildx` clones the repository before 
 executing instructions and there is no other way to provide access 
 tokens to `Buildx` currently. The solution for this circumstance could use the 
