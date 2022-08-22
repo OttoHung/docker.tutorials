@@ -196,7 +196,7 @@ In the `Dockerfile`, using `COPY --from=${buildContextName}` to copy
 the build context from the temporary directory into a work directory 
 as follows:
 ```dockerfile
-## Stage name is not necessary if it is not a multi-stage build
+## Stage name is not compulsory if it is not a multi-stage build
 ## But `FROM` instruction must be provided.
 ## Learn more from https://docs.docker.com/engine/reference/builder/#from
 FROM node:14.17.1-alpine AS sourceStage
