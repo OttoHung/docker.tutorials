@@ -293,13 +293,24 @@ docker buildx build \
 Once the tarball file has been downloaded, it is required to unpack tarball 
 before copying the contents to another work directory. On macOS, `tar -xzf` 
 could be used to unpack the tarball.
-[[Learn More](../dockerfiles/build-contexts/tarball/Dockerfile)]
+```dockerfile
+FROM node:14.17.1-alpine as sourceStage
+WORKDIR /source
+ARG TARBALL_NAME
+
+## tarball must be downloaded by COPY instruction then be unarchived 
+## by tar command
+COPY --from=tarball ["./", "/source"]
+RUN tar -xzf ${TARBALL_NAME}
+```
+> [Learn More](../dockerfiles/build-contexts/tarball/Dockerfile)
+> 
 
 It is recommended to double-check the directory name is as same as the 
-tarball name before making a tarball. If the names of both are different, 
-such as the tarball packed by GitHub Release, the folder name must be given 
-to the `dockerfile` to copy the contents because the tarball name is not 
-the same.
+tarball name or not before making a tarball. If the names of both are 
+different, such as the tarball packed by GitHub Release, the folder 
+name must be given to the `dockerfile` to copy the contents because 
+the tarball name is not the same.
 
 
 ## Load build context from a docker image
