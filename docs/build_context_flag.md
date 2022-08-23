@@ -177,10 +177,10 @@ docker buildx build \
 > [Learn More](../scripts/build-contexts/git/https/build_from_public.sh) 
 > 
 
-The build context will be cloned to a directory with the name of the 
-repository in the `WORKDIR`. For example, the name of a repository is 
-`docker.tutorials` and the build context will be stored in a directory 
-named `docker.tutorials` in this case:
+By this way, the build context will be cloned to a directory whose name 
+is as same as the repository in the `WORKDIR`. For example, the name of 
+the repository is `docker.tutorials` then the build context will be 
+stored in a directory named `docker.tutorials` as follows:
 ```
 .
 +-- ${WORK_DIR}
