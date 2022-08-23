@@ -247,9 +247,31 @@ However, the remote repository cannot be cloned and an error message
 returned as 
 `unsupported context source **git@github.com** for ${BUILD_CONTEXT_NAME}`.
 
-To resolve this issue, it is recommended to use `--ssh` with `Buildx` to 
-clone the repository by `RUN --mount=type=ssh git clone ${GIT_REPO_URL}`.
-[[Learn More](../dockerfiles/git/ssh//Dockerfile)]
+To resolve this issue, it is recommended to use `--ssh` and `RUN` 
+instruction with `Buildx` to clone the repository as follows:
+```bash
+docker buildx build \
+   --secret id=npm,src=$HOME/.npmrc \
+   --ssh default=$SSH_AUTH_SOCK \
+   -t ${IMG_NAME} \
+   .
+```
+> [Learn More](../scripts/git/ssh/build.sh)
+```dockerfile
+FROM node:14.17.1-alpine AS sourceStage
+WORKDIR /source
+
+## node-alpine doesn't include openssh-client and git by default
+RUN apk update && apk upgrade \
+    && apk add openssh-client git
+
+## To store SSH key temporarily
+RUN mkdir -p -m 0700 ~/.ssh \
+    && ssh-keyscan -H ${HOSTING} >> ~/.ssh/known_hosts
+RUN --mount=type=ssh git clone ${REPO}
+```
+> [Learn More](../dockerfiles/git/ssh//Dockerfile)
+> 
 
 Then the build context will be cloned into the same folder structure listed 
 at [Clone the git repository via HTTPS](#clone-the-git-repository-via-https)
