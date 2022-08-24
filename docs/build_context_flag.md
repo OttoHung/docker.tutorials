@@ -6,6 +6,7 @@
 - [Why do we need the Build Context flag?](#why-do-we-need-the-build-context-flag)
 - [What is the Build Context flag?](#what-is-the-build-context-flag)
   - [Load build context from a Local Directory](#load-build-context-from-a-local-directory)
+    - [Combine multiple build contexts](#combine-multiple-build-contexts)
   - [Load build context from a Git repository](#load-build-context-from-a-git-repository)
     - [Clone the git repository via HTTPS](#clone-the-git-repository-via-https)
     - [Clone the git repository via SSH](#clone-the-git-repository-via-ssh)
@@ -130,7 +131,49 @@ WORKDIR /source
 COPY --from=app ["./", "/source/workspaces/greeting"]
 ```
 > [Learn More](../dockerfiles/build-contexts/local-directory/Dockerfile)
+> 
 
+### Combine multiple build contexts
+
+`Buildx` can deal with multiple build contexts as well. For example, 
+`docker.tutorial` is a monorepo that has a configuration file for 
+packages at the root directory level as follows:
+```bash
+.
++-- docker.tutorials
+|   +-- dockerfiles
+|       +-- greeting
+|       +-- calculator
+|   +-- workspaces
+|       +-- greeting
+|       +-- calculator
+|   +-- package.json
+|   +-- tsconfig.json
+|   +-- README.md
+```
+
+Despite copying the whole directory to have the configuration file in the 
+image, it would be good to copy `package.json` file only through the build
+context flag.
+```bash
+docker buildx build \
+    --build-context repo=. \
+    --build-context app=workspaces/greeting \
+    -t ${IMG_NAME} \
+    .
+```
+> [Learn More](../scripts/build-contexts/local-directory/build_from_root.sh)
+> 
+
+```dockerfile
+FROM node:14.17.1-alpine AS sourceStage
+WORKDIR /source
+COPY --from=repo ["./package.json", "/source"]
+COPY --from=repo ["./tsconfig.json", "/source"]
+COPY --from=app ["./", "/source/workspaces/greeting"]
+```
+> [Learn More](../dockerfiles/build-contexts/local-directory/Dockerfile)
+> 
 
 If the build context is not in the same directory as follows:
 ```bash
