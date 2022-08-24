@@ -5,15 +5,15 @@
   - [How to install/upgrade `Buildx`?](#how-to-installupgrade-buildx)
 - [Why do we need the Build Context flag?](#why-do-we-need-the-build-context-flag)
 - [What is the Build Context flag?](#what-is-the-build-context-flag)
-  - [Load build context from a Local Directory](#load-build-context-from-a-local-directory)
-    - [Load build context via relative file path](#load-build-context-via-relative-file-path)
-    - [Combine multiple build contexts](#combine-multiple-build-contexts)
-    - [Load build context via absolute file path](#load-build-context-via-absolute-file-path)
-  - [Load build context from a Git repository](#load-build-context-from-a-git-repository)
-    - [Clone the git repository via HTTPS](#clone-the-git-repository-via-https)
-    - [Clone the git repository via SSH](#clone-the-git-repository-via-ssh)
-  - [Load build context from a tarball via HTTP URL](#load-build-context-from-a-tarball-via-http-url)
-  - [Load build context from a docker image](#load-build-context-from-a-docker-image)
+- [How to load build context from a Local Directory?](#how-to-load-build-context-from-a-local-directory)
+  - [Load build context via relative file path](#load-build-context-via-relative-file-path)
+  - [Combine multiple build contexts](#combine-multiple-build-contexts)
+  - [Load build context via absolute file path](#load-build-context-via-absolute-file-path)
+- [How to load build context from a Git repository?](#how-to-load-build-context-from-a-git-repository)
+  - [Clone the git repository via HTTPS](#clone-the-git-repository-via-https)
+  - [Clone the git repository via SSH](#clone-the-git-repository-via-ssh)
+- [How to load build context from a tarball via HTTP URL?](#how-to-load-build-context-from-a-tarball-via-http-url)
+- [How to load build context from a docker image?](#how-to-load-build-context-from-a-docker-image)
 - [Reference](#reference)
 
 
@@ -102,10 +102,9 @@ By using build context flags, developers can
 copy the context outside of the project directory.
 
 
-## Load build context from a Local Directory
+# How to load build context from a Local Directory?
 
-
-### Load build context via relative file path
+## Load build context via relative file path
 
 Build context flag accepts relative file path and absolute file 
 path when the user would like to build an image from the files 
@@ -138,7 +137,8 @@ COPY --from=app ["./", "/source/workspaces/greeting"]
 > [Learn More](../dockerfiles/build-contexts/local-directory/Dockerfile)
 > 
 
-### Combine multiple build contexts
+
+## Combine multiple build contexts
 
 `Buildx` can deal with multiple build contexts as well. For example, 
 `docker.tutorial` is a monorepo that has a configuration file for 
@@ -180,7 +180,8 @@ COPY --from=app ["./", "/source/workspaces/greeting"]
 > [Learn More](../dockerfiles/build-contexts/local-directory/Dockerfile)
 > 
 
-### Load build context via absolute file path
+
+## Load build context via absolute file path
 
 If the build context is not in the same directory as follows:
 ```bash
@@ -221,9 +222,9 @@ docker buildx build \
 > 
 
 
-## Load build context from a Git repository
+# How to load build context from a Git repository?
 
-### Clone the git repository via HTTPS
+## Clone the git repository via HTTPS
 
 It is quite simple to load build context from a Git repository by 
 specifying the URL of the repository and tagging the branch name with 
@@ -292,7 +293,8 @@ RUN --mount=type=secret,id=${SECRET_ID} \
 ```
 > [Learn More](../dockerfiles/git/https/private/Dockerfile)
 
-### Clone the git repository via SSH
+
+## Clone the git repository via SSH
 
 By assigning a SSH URL to `Buildx` like:
 ```bash
@@ -337,7 +339,7 @@ Then the build context will be cloned into the same folder structure listed
 at [Clone the git repository via HTTPS](#clone-the-git-repository-via-https)
 
 
-## Load build context from a tarball via HTTP URL
+# How to load build context from a tarball via HTTP URL?
 
 Build context flag also supports downloading tarball(`*.tar` or `*.tar.gz`) 
 via an HTTP URL as:
@@ -373,7 +375,7 @@ name must be given to the `Dockerfile` to copy the contents because
 the tarball name is not the same.
 
 
-## Load build context from a docker image
+# How to load build context from a docker image?
 
 `Dockerfile 1.4` supports that the docker image can be loaded by `FROM` 
 instruction with the URL of the image as:
