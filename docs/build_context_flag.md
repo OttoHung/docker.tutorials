@@ -220,6 +220,7 @@ docker buildx build \
 > [Learn More](../scripts/build-contexts/local-directory/build_from_parent.sh)
 > 
 
+
 ## Load build context from a Git repository
 
 ### Clone the git repository via HTTPS
@@ -396,6 +397,13 @@ docker buildx build
   .
 ```
 > [Learn More](../scripts/build-contexts/docker-image/build_from_latest.sh)
+> 
+
+Then using `FROM` instruction to import the image:
+```dockerfile
+FROM image AS sourceStage
+```
+> [Learn More](../dockerfiles/build-contexts/docker-image/Dockerfile)
 > 
 
 Also, an image digest following up on the tag of the image can be used to specify 
