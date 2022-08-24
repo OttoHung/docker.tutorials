@@ -152,9 +152,9 @@ packages at the root directory level as follows:
 |   +-- README.md
 ```
 
-Despite copying the whole directory to have the configuration file in the 
-image, it would be good to copy `package.json` file only through the build
-context flag.
+It would be good to copy `package.json` file only through the build
+context flag rather than copying the whole directory to have the 
+configuration file in the image.
 ```bash
 docker buildx build \
     --build-context repo=. \
