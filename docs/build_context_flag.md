@@ -6,7 +6,9 @@
 - [Why do we need the Build Context flag?](#why-do-we-need-the-build-context-flag)
 - [What is the Build Context flag?](#what-is-the-build-context-flag)
   - [Load build context from a Local Directory](#load-build-context-from-a-local-directory)
+    - [Load build context via relative file path](#load-build-context-via-relative-file-path)
     - [Combine multiple build contexts](#combine-multiple-build-contexts)
+    - [Load build context via absolute file path](#load-build-context-via-absolute-file-path)
   - [Load build context from a Git repository](#load-build-context-from-a-git-repository)
     - [Clone the git repository via HTTPS](#clone-the-git-repository-via-https)
     - [Clone the git repository via SSH](#clone-the-git-repository-via-ssh)
@@ -102,6 +104,9 @@ copy the context outside of the project directory.
 
 ## Load build context from a Local Directory
 
+
+### Load build context via relative file path
+
 Build context flag accepts relative file path and absolute file 
 path when the user would like to build an image from the files 
 in a local directory.
@@ -174,6 +179,8 @@ COPY --from=app ["./", "/source/workspaces/greeting"]
 ```
 > [Learn More](../dockerfiles/build-contexts/local-directory/Dockerfile)
 > 
+
+### Load build context via absolute file path
 
 If the build context is not in the same directory as follows:
 ```bash
