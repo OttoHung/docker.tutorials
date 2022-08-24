@@ -105,7 +105,7 @@ Build context flag accepts relative file path and absolute file
 path when the user would like to build an image from the files 
 in a local directory.
 
-To load build context from a relative file path:
+The relative file path can be specified by the following two ways:
 ```bash
 docker buildx build \
   --build-context app=./workspaces/greeting \
@@ -122,6 +122,15 @@ docker buildx build \
   .
 ```
 > [Learn More](../scripts/build-contexts/local-directory/build_from_root_no_dot.sh)
+
+Then using `COPY --from=${buildContextName}` in the `dockerfile` to copy files:
+```dockerfile
+FROM node:14.17.1-alpine AS sourceStage
+WORKDIR /source
+COPY --from=app ["./", "/source/workspaces/greeting"]
+```
+> [Learn More](../dockerfiles/build-contexts/local-directory/Dockerfile)
+
 
 If the build context is not in the same directory as follows:
 ```bash
