@@ -129,7 +129,7 @@ docker buildx build \
 ```
 > [Learn More](../scripts/build-contexts/local-directory/build_from_root_no_dot.sh)
 
-Then using `COPY --from=${buildContextName}` in the `dockerfile` to copy files:
+Then using `COPY --from=${buildContextName}` in the `Dockerfile` to copy files:
 ```dockerfile
 FROM node:14.17.1-alpine AS sourceStage
 WORKDIR /source
@@ -369,7 +369,7 @@ RUN tar -xzf ${TARBALL_NAME}
 It is recommended to double-check the directory name is as same as the 
 tarball name or not before making a tarball. If the names of both are 
 different, such as the tarball packed by GitHub Release, the folder 
-name must be given to the `dockerfile` to copy the contents because 
+name must be given to the `Dockerfile` to copy the contents because 
 the tarball name is not the same.
 
 
@@ -419,7 +419,7 @@ docker buildx build
 
 Build Context flag is also a convenient way to specify other docker images for 
 the build, such as base image and image for app, from command prompt dynamically. 
-By this way, it's easy to change the base images without modifying `Dockerfile` 
+In this way, it's easy to change the base images without modifying `Dockerfile` 
 and it's not necessary to write multiple `Dockerfile` for different platforms.
 ```bash
 docker buildx build
