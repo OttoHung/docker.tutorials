@@ -8,7 +8,6 @@
 FROM node:14.17.1-alpine AS sourceStage
 WORKDIR /source
 ## There are files under workspaces/greeting/dist to app direcotry only
-COPY --from=repo ["./node_modules", "/source/node_modules"]
 COPY --from=repo ["./package.json", "/source"]
 COPY --from=repo ["./tsconfig.json", "/source"]
 COPY --from=repo ["./LICENSE", "/source"]
