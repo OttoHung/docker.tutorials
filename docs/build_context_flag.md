@@ -417,10 +417,10 @@ docker buildx build
 > [Learn More](../scripts/build-contexts/docker-image/build_from_version.sh)
 > 
 
-The benefit of using build context flag for docker image is we can specify 
-multiple docker images, such as base image and image for app, from command 
-prompt dynamically. So that we don't need to modify `Dockerfile` when we would 
-like to choose another base image for the build.
+Build Context flag is also a convenient way to specify other docker images for 
+the build, such as base image and image for app, from command prompt dynamically. 
+By this way, it's easy to change the base images without modifying `Dockerfile` 
+and it's not necessary to write multiple `Dockerfile` for different platforms.
 ```bash
 docker buildx build
   --build-context baseImage=docker-image://alpine:3.15 \
