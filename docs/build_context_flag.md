@@ -8,7 +8,7 @@ of truth only. However, the engineers may need to have the context
 from different locations based on the type of files. For instance, 
 icons, images or other resources that are not included in the same 
 package, including the resource from other docker images. 
-Fortunately, the Docker Buildx tool supports multiple build context 
+Fortunately, the Docker Buildx toolkit supports multiple build context 
 flag for Docker 1.4. Let's learn how to use this new feature.
 
 The following list is a shortcut for jumping into a specific topic handy.
