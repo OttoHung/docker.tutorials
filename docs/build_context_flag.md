@@ -1,5 +1,17 @@
 # Build docker image from multiple build contexts <!-- omit in toc -->
 
+Building a docker image requires specifying a source of truth to 
+include in the image from a local directory or a remote git 
+repository. In the previous version, the docker build engine 
+allows users to specify the build context from a single source 
+of truth. However, the engineers may need to have the context 
+from different locations based on the type of files. For instance, 
+icons, images or other resources that are not included in the same 
+package, including the resource from other docker images. 
+Fortunately, the Docker Buildx tool supports multiple build context 
+flag for Docker 1.4. Let's learn how to use this new feature.
+
+The following list is a shortcut for jumping into a specific topic handy.
 - [What version of Docker is this tutorial targeting?](#what-version-of-docker-is-this-tutorial-targeting)
   - [How to specify the version of `Dockerfile` frontend?](#how-to-specify-the-version-of-dockerfile-frontend)
   - [How to install/upgrade `Buildx`?](#how-to-installupgrade-buildx)
