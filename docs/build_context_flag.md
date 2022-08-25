@@ -2,9 +2,9 @@
 
 Building a docker image requires specifying a source of truth to 
 include in the image from a local directory or a remote git 
-repository. In the previous version, the docker build engine 
+repository. In the previous version, the docker BuildKit 
 allows users to specify the build context from a single source 
-of truth. However, the engineers may need to have the context 
+of truth only. However, the engineers may need to have the context 
 from different locations based on the type of files. For instance, 
 icons, images or other resources that are not included in the same 
 package, including the resource from other docker images. 
