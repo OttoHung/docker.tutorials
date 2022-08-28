@@ -43,6 +43,7 @@ COPY --from=moduleStage ["/module", "/app"]
 EXPOSE 5478
 
 ## || exit 1 cannot be assigned to `HEALTHCHECK` instruction by exec array
+## This doesn't work and get `unhealthy` in the status
 HEALTHCHECK CMD ["curl", "--fail 0.0.0.0:5478"]
 
 ## To use `ENTRYPOINT` due to this image should be started up
