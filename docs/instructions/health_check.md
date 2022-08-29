@@ -62,3 +62,7 @@ docker.tutorials:health-check-exec-sh-c   36 seconds ago   Up 36 seconds (health
 ```
 
 
+# Conclusion
+
+In this case, it's better to use shell form due to the `||` is after 
+the `curl` command or to use `sh -c` for exec form.
